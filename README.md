@@ -32,8 +32,8 @@ Colorfly는 **‘색’**을 테마로 한 퍼즐 기반 상호작용 게임입�
 <br/>
 
 ## 게임 설명
-<img src="https://github.com/user-attachments/assets/bf25f842-51bc-482c-980b-06808302f174" width="480px" height="270px">
-<img src="https://github.com/user-attachments/assets/81a4d79a-e606-4651-bee8-4a11de9b636d" width="480px" height="270px">
+<img src="https://github.com/user-attachments/assets/bf25f842-51bc-482c-980b-06808302f174" width="35%" height="35%">
+<img src="https://github.com/user-attachments/assets/81a4d79a-e606-4651-bee8-4a11de9b636d" width="35%" height="35%">
 
 ### 🧩 게임 소개
 
