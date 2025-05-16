@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Wall
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Object
+  - Wall
+  - Tile
+  - OverUI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Tile
+    uniqueID: 55504615
+    locked: 0
+  - name: ObjBottom
+    uniqueID: 1224256799
+    locked: 0
+  - name: ObjUp
+    uniqueID: 2592318497
+    locked: 0
+  - name: Filter
+    uniqueID: 2468160265
+    locked: 0
+  - name: UI
+    uniqueID: 4135836629
+    locked: 0
+  - name: OverUI
+    uniqueID: 2897137737
+    locked: 0
+  - name: Transition
+    uniqueID: 3525178507
+    locked: 0

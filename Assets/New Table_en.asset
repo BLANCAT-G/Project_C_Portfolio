@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: New Table_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 21973fe79b9ee9544a12ef998e9f08b1, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 15934025728
+    m_Localized: Thermal Contrast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55947736536444928
+    m_Localized: Personal Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506414089498624
+    m_Localized: Return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506424868859904
+    m_Localized: Color Virus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506374755315712
+    m_Localized: Escape Hatch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506404727812096
+    m_Localized: Twin Chambers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506421127540736
+    m_Localized: Signal Beacon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506423023366144
+    m_Localized: Deliberate Steps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506423715426304
+    m_Localized: Kaleidoscope
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506424315211776
+    m_Localized: Red Carpet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506534885453824
+    m_Localized: Pacesetter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72506538828099584
+    m_Localized: Unhesitating Period
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85172699692658688
+    m_Localized: Bubble Bubble
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85181019442769920
+    m_Localized: a
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85181125890011136
+    m_Localized: Plus Minus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85186551440338944
+    m_Localized: Motionless Progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85187077737410560
+    m_Localized: Beauty of Blank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85187731939782656
+    m_Localized: Hidden Card
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85189167356440576
+    m_Localized: Can't see the forest for the trees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85190662122500096
+    m_Localized: Construction Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85191691698302976
+    m_Localized: Star-Crossed Lovers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85192096859680768
+    m_Localized: Crossed Fate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85192652168753152
+    m_Localized: Start off on the Right Foot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85193018314715136
+    m_Localized: "D\xE9j\xE0 vu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85193241099366400
+    m_Localized: Compliance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85194543984406528
+    m_Localized: Master Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85194557804638208
+    m_Localized: Winding Byway
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85196880324980736
+    m_Localized: SquarePants
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99113414730575872
+    m_Localized: Invisible Man
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99113456057053184
+    m_Localized: Decalcomania
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99113480396599296
+    m_Localized: Stepping Stones
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

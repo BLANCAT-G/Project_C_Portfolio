@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Title_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 5254affaab7c2134f8d2f945764f7cf4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 245135962112
+    m_Localized: PLAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 578897702912
+    m_Localized: EDITOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 722099630080
+    m_Localized: OPTION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 938081120256
+    m_Localized: ENGLISH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1277710692352
+    m_Localized: EXIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13196953776128
+    m_Localized: Primeval Forest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13671270838272
+    m_Localized: Harmonic Desert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14530134274048
+    m_Localized: Achromatic Planet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14510223912960
+    m_Localized: Alpha Tundra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18089341913788416
+    m_Localized: Languages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18089678259220480
+    m_Localized: Full Screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18090084024578048
+    m_Localized: Resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18090327608782848
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18090451495940096
+    m_Localized: SFX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25908212209152000
+    m_Localized: RESUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25908312985694208
+    m_Localized: RESTART
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25908829908496384
+    m_Localized: LEVEL SELECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25908912209129472
+    m_Localized: TITLE
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
