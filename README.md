@@ -16,7 +16,6 @@ Colorfly는 **‘색’**을 테마로 한 퍼즐 기반 상호작용 게임입�
 <br/>
 
 ## 개요
-<img src="https://github.com/user-attachments/assets/8c076eff-a801-462e-b1b8-25af56e034ee.png" width="100px" height="100px">
 
 ![Image Sequence_001_0000](https://github.com/user-attachments/assets/8c076eff-a801-462e-b1b8-25af56e034ee)
 
@@ -33,8 +32,10 @@ Colorfly는 **‘색’**을 테마로 한 퍼즐 기반 상호작용 게임입�
 <br/>
 
 ## 게임 설명
+<img src="https://github.com/user-attachments/assets/bf25f842-51bc-482c-980b-06808302f174" width="480px" height="270px">
+<img src="https://github.com/user-attachments/assets/81a4d79a-e606-4651-bee8-4a11de9b636d" width="480px" height="270px">
 
-#### 🧩 게임 소개
+### 🧩 게임 소개
 
 Colorfly는 단순한 이동 퍼즐이 아닌, 색의 조합과 상태 변화, 오브젝트 간 상호작용에 기반한 창의적인 색 퍼즐 게임입니다.
 
@@ -42,7 +43,7 @@ Colorfly는 단순한 이동 퍼즐이 아닌, 색의 조합과 상태 변화, �
 <br/><br/>
 
 
-#### 🎮 주요 시스템
+### 🎮 주요 시스템
 **플레이어 조작**
 
 + 방향키로 상하좌우 인접한 칸으로 이동할 수 있습니다. 
@@ -90,6 +91,10 @@ Colorfly는 단순한 이동 퍼즐이 아닌, 색의 조합과 상태 변화, �
 + 자물쇠: 정해진 3개의 스탬프를 순서대로 밟으면 해제되는 벽입니다.
 
 + 스탬프: 같은 색일때 밟을 시 상호작용합니다.
+
+<br/>
+
+### 🗺️ 맵 예시
 <br/><br/>
 
 ## 맵 에디터
