@@ -95,17 +95,34 @@ Colorfly는 단순한 이동 퍼즐이 아닌, 색의 조합과 상태 변화, �
 <br/>
 
 ### 🗺️ 맵 예시
+
+<img src="https://github.com/user-attachments/assets/28d285a4-185d-4cc3-a7a2-d2fa9384e104" width="45%" height="45%">
+<img src="https://github.com/user-attachments/assets/34c7f20c-5ee4-4406-a1ba-6ce7901f97f7" width="45%" height="45%">
+<img src="https://github.com/user-attachments/assets/fcb0a4f2-3fa8-4388-b7d0-d1b1543147a9" width="45%" height="45%">
+<img src="https://github.com/user-attachments/assets/64d9adf9-b31a-4333-90ff-075158f751a5" width="45%" height="45%">
+
 <br/><br/>
 
 ## 맵 에디터
+![Image Sequence_017_0000](https://github.com/user-attachments/assets/4789b529-d6bf-4f0f-8433-20273c16f159)
+
 만들어진 맵을 플레이하는 것 뿐만 아니라 유저가 직접 맵을 제작하고 플레이할 수도 있습니다.
 
-#### 에디터 모드
+### 주요 시스템
++ 설정 버튼을 통해 맵 크기를 변경할 수 있습니다.
+
++ Ctrl + S 로 저장할 수 있습니다.
+
++ Ctrl + Z / Ctrl + Y 로 실행 취소 (Undo) 와 다시 실행 (Redo) 이 가능합니다.
+
++ T 로 현재 맵을 테스트 할 수 있습니다.
+
+### 에디터 모드
 + 펜: 오브젝트를 배치할 수 있습니다.
 
 + 지우개: 오브젝트를 제거합니다.
 
-+ 선택: 오브젝트를 선택해 세부 옵션을 설정합니다
++ 선택: 오브젝트를 선택해 세부 옵션을 설정합니다.
 
 
 
