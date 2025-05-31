@@ -18,17 +18,6 @@ public class ButtonSetter : MonoBehaviour
 
     public void setButton()
     {
-        spritesArr = mapEditor.tileSpritesArr;
-        for (int i = 1; i < spritesArr.Length; ++i)
-        {
-            int index = i;
-            GameObject b = Instantiate(imageButton,tilePage.transform);
-            image=b.transform.Find("Image").GetComponent<Image>();
-            image.sprite = spritesArr[i];
-            image.color=Color.white;
-            b.GetComponent<RectTransform>().anchoredPosition=new Vector2(41+61*((i-1)%3),-41-61*((i-1)/3));
-            b.GetComponent<Button>().onClick.AddListener(() => OnClickSetTile(index));
-        }
         
         spritesArr = mapEditor.decoSpritesArr;
         for (int i = 1; i < spritesArr.Length; ++i)
@@ -117,13 +106,7 @@ public class ButtonSetter : MonoBehaviour
             b.GetComponent<Button>().onClick.AddListener(() => OnClickSetColor(index));
         }
     }
-
-    public void OnClickSetTile(int i)
-    {
-        SetCurButton(EventSystem.current.currentSelectedGameObject.GetComponent<Button>());
-        mapEditor.setTileValue(new TileInfo(i));
-        mapEditor.paletteMode = MapEditor.PaletteMode.Tile;
-    }
+    
 
     public void OnClickSetDeco(int i)
     {

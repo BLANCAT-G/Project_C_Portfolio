@@ -35,15 +35,8 @@ public class ChangeWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnClickTileButton();
+        OnClickObjectButton();
         OnPenModeClick();
-    }
-    public void OnClickTileButton()
-    {
-        SetAllPanelFalse();
-        mapEditor.paletteMode = MapEditor.PaletteMode.Tile;
-        TilePanel.SetActive(true);
-        tileButton.sprite = tile[1];
     }
 
     public void OnClickDecoButton()

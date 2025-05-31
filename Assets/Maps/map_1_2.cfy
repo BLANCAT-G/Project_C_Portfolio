@@ -5,40 +5,40 @@
     "mapName": "두개의방",
     "tileSaveObjectArray": [
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 10
@@ -68,10 +68,10 @@
             "tileval": 4
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -101,10 +101,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -134,10 +134,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -167,10 +167,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -200,10 +200,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -233,10 +233,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -266,10 +266,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -299,10 +299,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -332,43 +332,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
-        },
-        {
-            "tileval": 11
-        },
-        {
-            "tileval": 3
-        },
-        {
-            "tileval": 3
-        },
-        {
-            "tileval": 2
-        },
-        {
-            "tileval": 1
-        },
-        {
-            "tileval": 2
-        },
-        {
-            "tileval": 2
-        },
-        {
-            "tileval": 2
-        },
-        {
-            "tileval": 5
-        },
-        {
-            "tileval": 18
-        },
-        {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -377,6 +344,39 @@
             "tileval": 3
         },
         {
+            "tileval": 3
+        },
+        {
+            "tileval": 2
+        },
+        {
+            "tileval": 1
+        },
+        {
+            "tileval": 2
+        },
+        {
+            "tileval": 2
+        },
+        {
+            "tileval": 2
+        },
+        {
+            "tileval": 5
+        },
+        {
+            "tileval": 0
+        },
+        {
+            "tileval": 0
+        },
+        {
+            "tileval": 11
+        },
+        {
+            "tileval": 3
+        },
+        {
             "tileval": 2
         },
         {
@@ -398,10 +398,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -431,10 +431,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -464,10 +464,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 11
@@ -497,10 +497,10 @@
             "tileval": 5
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
             "tileval": 12
@@ -530,40 +530,40 @@
             "tileval": 6
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         },
         {
-            "tileval": 18
+            "tileval": 0
         }
     ],
     "decoSaveObjectArray": [
@@ -1131,565 +1131,565 @@
     ],
     "wallSaveObjectArray": [
         {
-            "wallval": 3
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 9
-        },
-        {
-            "wallval": 19
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
-        },
-        {
-            "wallval": 18
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 0
-        },
-        {
-            "wallval": 2
+            "wallval": 1
         },
         {
             "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 11
+            "wallval": 1
         },
         {
-            "wallval": 17
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 0
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
+        },
+        {
+            "wallval": 1
         }
     ],
     "fwallSaveObjectArray": [

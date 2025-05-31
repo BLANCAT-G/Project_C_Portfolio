@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 
@@ -51,7 +52,6 @@ public class MapEditor: MonoBehaviour
         Select
     }
     public enum PaletteMode{
-        Tile,
         Deco,
         Wall,
         FilterWall,
@@ -63,6 +63,9 @@ public class MapEditor: MonoBehaviour
     private bool isPause;
     
     private GridMap gridmap;
+    public Tilemap tilemap,wallmap;
+    public RuleTile[] ruletiles,rulewalls;
+    private RuleTile ruletile, rulewall;
     
     private Grid<GameObject> tileVisualGrid,
         decoVisualGrid,
@@ -126,7 +129,7 @@ public class MapEditor: MonoBehaviour
         Objects=transform.Find("Objects");
         Filters = transform.Find("Filters");
         Gridline = transform.Find("Gridline");
-        InitMap();
+        Init();
     }
 
     // Update is called once per frame
@@ -171,7 +174,7 @@ public class MapEditor: MonoBehaviour
             editMode = EditMode.Eraser;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (!Input.GetKey(KeyCode.LeftControl)&&Input.GetKeyDown(KeyCode.S))
         {
             editMode = EditMode.Select;
         }
@@ -302,14 +305,12 @@ public class MapEditor: MonoBehaviour
                 {
                     switch (paletteMode)
                     {
-                        case PaletteMode.Tile:
-                            gridmap.setValue(tilevalue.DeepCopy(),mousePos);
-                            break;
                         case PaletteMode.Deco:
                             gridmap.setValue(decovalue.DeepCopy(),mousePos);
                             break;
                         case PaletteMode.Wall:
                             gridmap.setValue(wallvalue.DeepCopy(),mousePos);
+                            gridmap.setValue(new TileInfo(0),mousePos);
                             gridmap.getObjValue(mousePos).objType = 0;
                             break;
                         case PaletteMode.FilterWall:
@@ -323,6 +324,8 @@ public class MapEditor: MonoBehaviour
                                 if (!playerExist)
                                 {
                                     gridmap.setValue(objvalue.DeepCopy(),mousePos);
+                                    gridmap.setValue(new WallInfo(0),mousePos);
+                                    gridmap.setValue(new TileInfo(1),mousePos);
                                     playerExist = true;
                                 }
                             }
@@ -330,9 +333,11 @@ public class MapEditor: MonoBehaviour
                             {
                                 ObjInfo objInfo = gridmap.getObjValue(mousePos);
                                 gridmap.setValue(objvalue.DeepCopy(),mousePos);
+                                gridmap.setValue(new WallInfo(0),mousePos);
+                                gridmap.setValue(new TileInfo(1),mousePos);
                                 CheckPlayer();
                             }
-                            gridmap.getWallValue(mousePos).wallval=0;
+                            
                             break;
                         
                         default:
@@ -343,14 +348,12 @@ public class MapEditor: MonoBehaviour
                 {
                     switch (paletteMode)
                     {
-                        case PaletteMode.Tile:
-                            gridmap.setValue(new TileInfo(0),mousePos);
-                            break;
                         case PaletteMode.Deco:
                             gridmap.setValue(new DecoInfo(0),mousePos);
                             break;
                         case PaletteMode.Wall:
                             gridmap.setValue(new WallInfo(0),mousePos);
+                            gridmap.setValue(new TileInfo(1),mousePos);
                             break;
                         case PaletteMode.FilterWall:
                             gridmap.setValue(new FWallInfo(0),mousePos);
@@ -423,14 +426,24 @@ public class MapEditor: MonoBehaviour
     {
         gridmap = new GridMap(mapWidth, mapHeight, new Vector3(0, 0));
         
+        
         tileVisualGrid = new Grid<GameObject>(mapWidth, mapHeight, 1, new Vector3(0, 0));
         tilevalue = new TileInfo(1);
-        for (int x = 0; x < mapWidth; ++x)
+        for (int x = -1; x <= mapWidth; ++x)
         {
-            for (int y = 0; y < mapHeight; ++y)
+            for (int y = -1; y <= mapHeight; ++y)
             {
+                if (x == -1 || x == mapWidth || y == -1 || y == mapHeight)
+                {
+                    wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                    wallmap.SetColor(new Vector3Int(x,y,0),Color.clear);
+                    continue;
+                }
+                
                 GameObject tmpObj = Instantiate(defaultTile,Tiles);
                 tmpObj.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                tmpObj.GetComponent<SpriteRenderer>().sprite =
+                    SpriteContainer.Instance.mapSpritesArray[mapStyle].baseTile;
                 tmpObj.transform.position = tileVisualGrid.getCenterPosition(x, y);
                 tileVisualGrid.setValue(x,y,tmpObj);
             }
@@ -449,8 +462,8 @@ public class MapEditor: MonoBehaviour
             }
         }
         
-        wallVisualGrid = new Grid<GameObject>(mapWidth, mapHeight, 1, new Vector3(0, 0));
-        wallvalue = new WallInfo(0);
+        wallVisualGrid=new Grid<GameObject>(mapWidth, mapHeight, 1, new Vector3(0, 0));
+        wallvalue = new WallInfo(1);
         for (int x = 0; x < mapWidth; ++x)
         {
             for (int y = 0; y < mapHeight; ++y)
@@ -564,10 +577,10 @@ public class MapEditor: MonoBehaviour
         Camera.main.orthographicSize = Mathf.Max(mapHeight, mapWidth * 9 / 16) > 10 ? 11.25f : 5.625f;
     }
 
-    public void InitMap()
+    public void Init()
     {
         isPause = false;
-        paletteMode = PaletteMode.Tile;
+        paletteMode = PaletteMode.Object;
         needUpdate = false;
         needSave = false;
         saveObject = SaveSystem.LoadObject<GridMap.SaveObject>(CustomManager.Instance.GetFileName());
@@ -586,9 +599,10 @@ public class MapEditor: MonoBehaviour
 
     public void InitSprites()
     {
-        tileSpritesArr=SpriteContainer.Instance.mapSpritesArray[mapStyle].tiles;
-        decoSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].decos;
+        ruletile = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleTile;
+        rulewall = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleWall;
         wallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].walls;
+        decoSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].decos;
         fwallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].filterwalls;
         objSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].objs;
         objBaseSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].objbases;
@@ -603,12 +617,26 @@ public class MapEditor: MonoBehaviour
         {
             for (int y = 0; y < mapHeight; ++y)
             {
-                tileVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
-                    tileSpritesArr[gridmap.getTileValue(x, y).tileval];
+                if (gridmap.getTileValue(x, y).tileval == 0)
+                    tilemap.SetTile(new Vector3Int(x,y,0),null);
+                else tilemap.SetTile(new Vector3Int(x,y,0),ruletile);
+                
                 decoVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
                     decoSpritesArr[gridmap.getDecoValue(x, y).decoval];
-                wallVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
-                    wallSpritesArr[gridmap.getWallValue(x, y).wallval];
+
+                if (gridmap.getWallValue(x, y).wallval >= wallSpritesArr.Length) continue;
+                if (gridmap.getWallValue(x, y).wallval == 1)
+                {
+                    wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                    wallVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite = wallSpritesArr[0];
+                }
+                else
+                {
+                    wallmap.SetTile(new Vector3Int(x,y,0),null);
+                    wallVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
+                        wallSpritesArr[gridmap.getWallValue(x, y).wallval];
+                }
+                
             }
         }
         
@@ -788,6 +816,8 @@ public class MapEditor: MonoBehaviour
         foreach (Transform t in Walls) Destroy(t.gameObject);
         foreach (Transform t in Objects) Destroy(t.gameObject);
         foreach (Transform t in Filters) Destroy(t.gameObject);
+        tilemap.ClearAllTiles();
+        wallmap.ClearAllTiles();
    
         InitGrid();
     }

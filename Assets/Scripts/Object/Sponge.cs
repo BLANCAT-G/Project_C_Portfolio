@@ -21,6 +21,7 @@ public class Sponge : IObject
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
+                case ObjType.Player:
                 case ObjType.BlackSmoke:
                 case ObjType.SandColor:
                     break;

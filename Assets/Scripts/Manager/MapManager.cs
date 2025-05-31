@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class MapManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance => instance;
     
     private GridMap gridMap;
+    public Tilemap tilemap, wallmap;
 
     public List<GameObject>[,] gameGrid;
     public List<GameObject> moveObjList=new List<GameObject>();
@@ -25,6 +27,7 @@ public class MapManager : MonoBehaviour
     
     
     private Sprite[] tileSpritesArr,decoSpritesArr,wallSpritesArr,fwallSpritesArr,stampSpritesArr;
+    private RuleTile ruletile, rulewall;
     private TileInfo tileInfo;
     private DecoInfo decoInfo;
     private WallInfo wallInfo;
@@ -94,9 +97,10 @@ public class MapManager : MonoBehaviour
         mapHeight = saveObject.height;
         mapWidth = saveObject.width;
         mapStyle = saveObject.mapStyle;
-        tileSpritesArr=SpriteContainer.Instance.mapSpritesArray[mapStyle].tiles;
-        decoSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].decos;
+        ruletile = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleTile;
+        rulewall = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleWall;
         wallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].walls;
+        decoSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].decos;
         fwallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].filterwalls;
         stampSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].stamps;
         gridMap = new GridMap(mapWidth, mapHeight, new Vector3(0, 0));
@@ -105,20 +109,20 @@ public class MapManager : MonoBehaviour
         
         gridMap.Load(saveObject);
 
-        for (int x = 0; x < mapWidth; ++x)
+        for (int x = -1; x <= mapWidth; ++x)
         {
-            for (int y = 0; y < mapHeight; ++y)
+            for (int y = -1; y <= mapHeight; ++y)
             {
-                tileInfo = gridMap.getTileValue(x, y);
-                obj = Instantiate(defaultTile);
-                obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
-                obj.GetComponent<SpriteRenderer>().sprite = tileSpritesArr[tileInfo.tileval];
-                if (tileInfo.tileval > 17 && gridMap.getWallValue(x, y).wallval == 0)
+                if (x == -1 || x == mapWidth || y == -1 || y == mapHeight)
                 {
-                    obj = Instantiate(wall);
-                    obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
-                    gameGrid[x*2,y*2].Add(obj);
+                    wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                    wallmap.SetColor(new Vector3Int(x,y,0),Color.clear);
+                    continue;
                 }
+                
+                tileInfo = gridMap.getTileValue(x, y);
+
+                if(tileInfo.tileval!=0) tilemap.SetTile(new Vector3Int(x,y,0),ruletile);
                 
                 decoInfo = gridMap.getDecoValue(x, y);
                 if (decoInfo.decoval != 0)
@@ -129,7 +133,14 @@ public class MapManager : MonoBehaviour
                 }
 
                 wallInfo = gridMap.getWallValue(x, y);
-                if (wallInfo.wallval != 0)
+                if (wallInfo.wallval == 1)
+                {
+                    obj = Instantiate(wall);
+                    obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
+                    gameGrid[x*2,y*2].Add(obj);
+                    wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                }
+                else if (wallInfo.wallval != 0)
                 {
                     obj = Instantiate(WallTile);
                     obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);

@@ -7,7 +7,9 @@ using UnityEngine;
 public class MapSprites
 {
     public Sprite background;
-    public Sprite[] tiles, decos, walls, filterwalls, objs,objbases, noneobjs,filters, stamps;
+    public RuleTile ruleTile,ruleWall;
+    public Sprite baseTile;
+    public Sprite[]  decos,walls, filterwalls, objs,objbases, noneobjs,filters, stamps;
 }
 
 public class SpriteContainer : MonoBehaviour
