@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -11,15 +12,16 @@ public class ButtonSetter : MonoBehaviour
     public GameObject imageButton,colorButton;
     public GameObject[] wallPage;
     public GameObject tilePage, decoPage, fwallPage, objPage, filterPage,colorPage;
+    private List<GameObject> decoButtons, wallButtons, fwallButtons;
     public Button curButton,curColorButton;
     public MapEditor mapEditor;
     private Image image, baseimage;
     private Sprite[] spritesArr, baseSpritesArr, noneColorSpritesArr;
 
-    public void setButton()
+    public void SetButton()
     {
-        
         spritesArr = mapEditor.decoSpritesArr;
+        decoButtons = new List<GameObject>();
         for (int i = 1; i < spritesArr.Length; ++i)
         {
             int index = i;
@@ -29,9 +31,11 @@ public class ButtonSetter : MonoBehaviour
             image.color=Color.white;
             b.GetComponent<RectTransform>().anchoredPosition=new Vector2(41+61*((i-1)%3),-41-61*((i-1)/3));
             b.GetComponent<Button>().onClick.AddListener(() => OnClickSetDeco(index));
+            decoButtons.Add(b);
         }
             
         spritesArr = mapEditor.wallSpritesArr;
+        wallButtons = new List<GameObject>();
         int pagenum = spritesArr.Length / 21 + (spritesArr.Length % 21 == 0 ? 0 : 1);
         for (int i = 0; i < pagenum; ++i)
         {
@@ -50,10 +54,12 @@ public class ButtonSetter : MonoBehaviour
                     OnSlideButtonClick( wallPage[k], wallPage[(k + pagenum - 1) % pagenum],2)));
                 wallPage[i].transform.Find("Button_Right").GetComponent<Button>().onClick.AddListener((() =>
                     OnSlideButtonClick( wallPage[k], wallPage[(k + 1) % pagenum],2)));
+                wallButtons.Add(b);
             }
         }
 
         spritesArr = mapEditor.fwallSpritesArr;
+        fwallButtons = new List<GameObject>();
         for (int i = 1; i < spritesArr.Length; ++i)
         {
             int index = i;
@@ -63,6 +69,7 @@ public class ButtonSetter : MonoBehaviour
             image.color=Color.white;
             b.GetComponent<RectTransform>().anchoredPosition=new Vector2(41+61*((i-1)%3),-41-61*((i-1)/3));
             b.GetComponent<Button>().onClick.AddListener(() => OnClickSetFWall(index));
+            fwallButtons.Add(b);
         }
         
         
@@ -106,7 +113,51 @@ public class ButtonSetter : MonoBehaviour
             b.GetComponent<Button>().onClick.AddListener(() => OnClickSetColor(index));
         }
     }
-    
+
+    public void RefreshButtonSprites()
+    {
+        spritesArr = mapEditor.decoSpritesArr;
+        int i = 0;
+        int len = spritesArr.Length;
+        foreach (GameObject g in decoButtons)
+        {
+            if (++i >= len)
+            {
+                g.SetActive(false);
+                continue;
+            }
+            g.SetActive(true);
+            g.transform.Find("Image").GetComponent<Image>().sprite = spritesArr[i];
+        }
+
+        spritesArr = mapEditor.fwallSpritesArr;
+        i = 0;
+        len = spritesArr.Length;
+        foreach (GameObject g in fwallButtons)
+        {
+            if (++i >= len)
+            {
+                g.SetActive(false);
+                continue;
+            }
+            g.SetActive(true);
+            g.transform.Find("Image").GetComponent<Image>().sprite = spritesArr[i];
+        }
+        
+        spritesArr = mapEditor.wallSpritesArr;
+        i = 0;
+        len = spritesArr.Length;
+        foreach (GameObject g in wallButtons)
+        {
+            if (++i >= len)
+            {
+                g.SetActive(false);
+                continue;
+            }
+            g.SetActive(true);
+            g.transform.Find("Image").GetComponent<Image>().sprite = spritesArr[i];
+        }
+    }
 
     public void OnClickSetDeco(int i)
     {

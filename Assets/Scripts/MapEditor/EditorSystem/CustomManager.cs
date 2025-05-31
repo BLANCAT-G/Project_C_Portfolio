@@ -11,6 +11,8 @@ public class CustomManager : MonoBehaviour
     
     
     private string fileName;
+    public MySaveList<GridMap.SaveObject> saveList;
+    public bool isTest = false;
     [SerializeField] 
     
     private void Awake()

@@ -189,7 +189,10 @@ public class GameManager : MonoBehaviour
 
     public void SetMapObjects()
     {
-        if(isEditor) MapManager.Instance.SetMapObjectsByFileName(CustomManager.Instance.GetFileName());
+        if (isEditor)
+        {
+            MapManager.Instance.SetMapObjectsBySaveObject(CustomManager.Instance.saveList.curNode.Data);
+        }
         else
         {
             string fileName = MapSelectMgr.Instance.GetCurFileName();

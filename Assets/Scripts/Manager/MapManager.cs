@@ -81,19 +81,21 @@ public class MapManager : MonoBehaviour
     {
         return alphaObjs;
     }
-    
 
     public void SetMapObjectsByFileName(string fileName)
     {
-        this.fileName = fileName;
-        
+        GridMap.SaveObject saveObject = SaveSystem.LoadObject<GridMap.SaveObject>(fileName);
+        SetMapObjectsBySaveObject(saveObject);
+    }
+    
+    public void SetMapObjectsBySaveObject(GridMap.SaveObject saveObject)
+    {
         mapObjects = new List<IObject>();
         colorTiles = new List<IObject>();
         palettes = new List<Palette>();
         fiters = new List<Filter>();
         alphaObjs = new List<IObject>();
         
-        GridMap.SaveObject saveObject = SaveSystem.LoadObject<GridMap.SaveObject>(fileName);
         mapHeight = saveObject.height;
         mapWidth = saveObject.width;
         mapStyle = saveObject.mapStyle;
@@ -328,6 +330,7 @@ public class MapManager : MonoBehaviour
             keyguide.transform.position = new Vector3(mapWidth / 2 + 0.5f, -0.6f);
         }
     }
+   
 
     public void MoveObjectsInList(Vector3 dir)
     {

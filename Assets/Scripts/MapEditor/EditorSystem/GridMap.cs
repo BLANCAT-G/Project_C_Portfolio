@@ -366,6 +366,11 @@ public class GridMap
         if (FilterGrid.inBoundary(mousePos) && ((x + y) % 2 == 1)) return true;
         return false;
     }
+
+    public void setMapStyle(int mapStyle)
+    {
+        this.mapStyle = mapStyle;
+    }
     
     [System.Serializable] 
     public class SaveObject

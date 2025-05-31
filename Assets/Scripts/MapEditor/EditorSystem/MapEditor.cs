@@ -51,7 +51,9 @@ public class MapEditor: MonoBehaviour
         Eraser,
         Select
     }
-    public enum PaletteMode{
+
+    public enum PaletteMode
+    {
         Deco,
         Wall,
         FilterWall,
@@ -59,7 +61,10 @@ public class MapEditor: MonoBehaviour
         Filter,
         Lock,
     }
-    // Start is called before the first frame update
+
+    private static MapEditor instance;
+    public static MapEditor Instance => instance;
+    
     private bool isPause;
     
     private GridMap gridmap;
@@ -108,18 +113,27 @@ public class MapEditor: MonoBehaviour
     public int mapWidth, mapHeight;
     [HideInInspector]
     public Sprite[] tileSpritesArr, decoSpritesArr, wallSpritesArr,fwallSpritesArr, objSpritesArr, objBaseSpritesArr, noneColorObjSpritesArr,filterSpritesArr,stampSpritesArr;
-
+    private Sprite baseTile;
+    
     public GameObject defaultTile,defaultObj,defaultLock,nullTile,wallTile,gridOutline;
     public ButtonSetter buttonSetter;
     public GameObject optionUI,objEditUI,sandEditUI,filterEditUI,lockEditUI;
     public Image outlineUI;
     public TMP_InputField widthField, heightField;
+    public TMP_Dropdown mapStyleDropdown;
     public TextMeshProUGUI mapName;
     
     private Vector3 tmpClickPos, tmpCameraPos;
 
     private GridMap.SaveObject saveObject;
     private MySaveList<GridMap.SaveObject> saveList;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+    }
+
     void Start()
     {
         outlineUI.alphaHitTestMinimumThreshold = 0.5f;
@@ -179,8 +193,10 @@ public class MapEditor: MonoBehaviour
             editMode = EditMode.Select;
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T) && playerExist)
         {
+            CustomManager.Instance.isTest = true;
+            CustomManager.Instance.saveList=saveList;
             SceneManager.LoadScene("SampleScene");
         }
 
@@ -411,7 +427,7 @@ public class MapEditor: MonoBehaviour
     {
         if (needUpdate)
         {
-            GridUpdate();
+            UpdateGrid();
             needUpdate = false;
         }
     }
@@ -442,8 +458,7 @@ public class MapEditor: MonoBehaviour
                 
                 GameObject tmpObj = Instantiate(defaultTile,Tiles);
                 tmpObj.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                tmpObj.GetComponent<SpriteRenderer>().sprite =
-                    SpriteContainer.Instance.mapSpritesArray[mapStyle].baseTile;
+                tmpObj.GetComponent<SpriteRenderer>().sprite = baseTile;
                 tmpObj.transform.position = tileVisualGrid.getCenterPosition(x, y);
                 tileVisualGrid.setValue(x,y,tmpObj);
             }
@@ -583,22 +598,33 @@ public class MapEditor: MonoBehaviour
         paletteMode = PaletteMode.Object;
         needUpdate = false;
         needSave = false;
-        saveObject = SaveSystem.LoadObject<GridMap.SaveObject>(CustomManager.Instance.GetFileName());
+        if (CustomManager.Instance.isTest)
+        {
+            saveList = CustomManager.Instance.saveList;
+            saveObject = saveList.curNode.Data;
+        }
+        else
+        {
+            saveObject = SaveSystem.LoadObject<GridMap.SaveObject>(CustomManager.Instance.GetFileName());
+        }
+        
         mapStyle = saveObject.mapStyle;
         mapHeight = saveObject.height;
         mapWidth = saveObject.width;
         mapName.text = saveObject.mapName;
-        InitSprites();
-        buttonSetter.setButton();
+        SetSprites();
+        buttonSetter.SetButton();
         InitGrid();
-        gridmap.Load(CustomManager.Instance.GetFileName());
+        gridmap.Load(saveObject);
         CheckPlayer();
-        saveList = new MySaveList<GridMap.SaveObject>(gridmap.CreateSaveObject(), 30);
+        if (CustomManager.Instance.isTest) CustomManager.Instance.isTest = false;
+        else saveList = new MySaveList<GridMap.SaveObject>(gridmap.CreateSaveObject(), 30);
         needUpdate = true;
     }
 
-    public void InitSprites()
+    public void SetSprites()
     {
+        baseTile = SpriteContainer.Instance.mapSpritesArray[mapStyle].baseTile;
         ruletile = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleTile;
         rulewall = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleWall;
         wallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].walls;
@@ -611,7 +637,7 @@ public class MapEditor: MonoBehaviour
         stampSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].stamps;
     }
 
-    public void GridUpdate()
+    public void UpdateGrid()
     {
         for (int x = 0; x < mapWidth; ++x)
         {
@@ -728,78 +754,6 @@ public class MapEditor: MonoBehaviour
         }
     }
 
-    public void GridUpdate(int x, int y,int k)
-    {
-        if (k == 0)
-        {
-            tileVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
-                tileSpritesArr[gridmap.getTileValue(x, y).tileval];
-            decoVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
-                decoSpritesArr[gridmap.getDecoValue(x, y).decoval];
-            wallVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
-                wallSpritesArr[gridmap.getWallValue(x, y).wallval];
-        
-            ObjInfo objInfo = gridmap.getObjValue(x, y);
-            GameObject tmp = objVisualGrid.getValue(x, y);
-            SpriteRenderer spriteRenderer = tmp.GetComponent<SpriteRenderer>();
-            if (objInfo.objType == ObjType.Stamp)
-            {
-                spriteRenderer.sprite = stampSpritesArr[(int)objInfo.colorType];
-                spriteRenderer.color=Color.white;
-                return;
-            }
-            else if (objInfo.objType == ObjType.Player && objInfo.colorType==ColorType.None)
-            {
-                spriteRenderer.sprite = objSpritesArr[(int)objInfo.objType];
-                spriteRenderer.color = ColorType.PlayerNone.ToColor();
-                tmp.transform.Find("Base").GetComponent<SpriteRenderer>().sprite = objBaseSpritesArr[(int)objInfo.objType];
-                return;
-            }
-            spriteRenderer.sprite = objSpritesArr[(int)objInfo.objType];
-            spriteRenderer.color = objInfo.colorType.ToColor();
-            tmp.transform.Find("Base").GetComponent<SpriteRenderer>().sprite = objBaseSpritesArr[(int)objInfo.objType];
-            if (objInfo.objType == ObjType.Paint || objInfo.objType == ObjType.Brush) spriteRenderer.sortingOrder = 6;
-            else spriteRenderer.sortingOrder = 4;
-        }
-        else if(k==1)
-        {
-            if ((x + y) % 2 == 0) return;
-            
-            FilterInfo filterInfo = gridmap.getFilterValue(x, y);
-            GameObject tmpSegment1 = filterVisualGrid1.getValue(x, y), tmpSegment2 = filterVisualGrid2.getValue(x, y);
-            SpriteRenderer spriteRenderer1 = tmpSegment1.GetComponent<SpriteRenderer>(),spriteRenderer2=tmpSegment2.GetComponent<SpriteRenderer>();
-            spriteRenderer1.sprite = filterSpritesArr[(int)filterInfo.filter1.filterType];
-            spriteRenderer2.sprite = filterSpritesArr[(int)filterInfo.filter2.filterType];
-            spriteRenderer1.color = filterInfo.filter1.colorType.ToColor();
-            spriteRenderer2.color = filterInfo.filter2.colorType.ToColor();
-            
-            filterInfo = gridmap.getFilterValue(x, y);
-            tmpSegment1 = filterVisualGrid1.getValue(x, y);
-            tmpSegment2 = filterVisualGrid2.getValue(x, y);
-            spriteRenderer1 = tmpSegment1.GetComponent<SpriteRenderer>();
-            spriteRenderer2 = tmpSegment2.GetComponent<SpriteRenderer>();
-            spriteRenderer1.sprite = filterSpritesArr[(int)filterInfo.filter1.filterType];
-            spriteRenderer2.sprite = filterSpritesArr[(int)filterInfo.filter2.filterType];
-            spriteRenderer1.color = filterInfo.filter1.colorType.ToColor();
-            spriteRenderer2.color = filterInfo.filter2.colorType.ToColor();
-
-            LockInfo lockInfo = gridmap.getLockValue(x, y);
-            GameObject tmpLock = lockVisualGrid.getValue(x, y);
-            if(!lockInfo.exist) tmpLock.SetActive(false);
-            else
-            {
-                tmpLock.SetActive(true);
-                for (int i = 0; i < 3; ++i)
-                {
-                    tmpLock.transform.Find("Key" + i.ToString()).GetComponent<SpriteRenderer>().color =
-                        lockInfo.KeyArr[i].ToColor();
-                }
-                    
-            }
-        }
-        
-    }
-
     public void CheckPlayer()
     {
         playerExist = false;
@@ -820,6 +774,42 @@ public class MapEditor: MonoBehaviour
         wallmap.ClearAllTiles();
    
         InitGrid();
+        gridmap.Load(saveObject);
+    }
+
+    public void ChangeStyle(int style)
+    {
+        if (style == mapStyle) return;
+        
+        gridmap.setMapStyle(style);
+        mapStyle = style;
+        SetSprites();
+        buttonSetter.RefreshButtonSprites();
+        
+        for (int x = -1; x <= mapWidth; ++x)
+        {
+            for (int y = -1; y <= mapHeight; ++y)
+            {
+                if (x == -1 || x == mapWidth || y == -1 || y == mapHeight)
+                {
+                    wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                    wallmap.SetColor(new Vector3Int(x,y,0),Color.clear);
+                    continue;
+                }
+
+                tileVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite = baseTile;
+                gridmap.setValue(new DecoInfo(0),new Vector3(x,y,0));
+                if(gridmap.getWallValue(x,y).wallval>1) gridmap.setValue(new WallInfo(1),new Vector3(x,y,0));
+            }
+        }
+    }
+    
+    public void ChangeProperty(int w,int h,int mapstyle)
+    {
+        Resize(w,h);
+        ChangeStyle(mapstyle);
+        AddSaveObject();
+        needUpdate = true;
     }
 
     public void Pause()
@@ -837,6 +827,7 @@ public class MapEditor: MonoBehaviour
         saveList.Undo();
         saveObject = saveList.curNode.Data;
         Resize(saveObject.width,saveObject.height);
+        ChangeStyle(saveObject.mapStyle);
         gridmap.Load(saveObject);
         needUpdate = true;
     }
@@ -846,15 +837,8 @@ public class MapEditor: MonoBehaviour
         saveList.Redo();
         saveObject = saveList.curNode.Data;
         Resize(saveObject.width,saveObject.height);
+        ChangeStyle(saveObject.mapStyle);
         gridmap.Load(saveObject);
-        needUpdate = true;
-    }
-
-    public void ChangeProperty(int w,int h)
-    {
-        Resize(w,h);
-        gridmap.Load(saveObject);
-        AddSaveObject();
         needUpdate = true;
     }
 
@@ -946,11 +930,12 @@ public class MapEditor: MonoBehaviour
         optionUI.SetActive(true);
         widthField.text = mapWidth.ToString();
         heightField.text = mapHeight.ToString();
-        
+        mapStyleDropdown.value = mapStyle;
+
     }
     public void OnApplyButtonClick()
     {
-        ChangeProperty(int.Parse(widthField.text),int.Parse(heightField.text));
+        ChangeProperty(int.Parse(widthField.text),int.Parse(heightField.text),mapStyleDropdown.value);
         optionUI.SetActive(false);
         Resume();
     }
