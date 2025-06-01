@@ -413,7 +413,12 @@ public class MapEditor: MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-            Camera.main.transform.position = tmpCameraPos + Camera.main.ScreenToViewportPoint(tmpClickPos-Input.mousePosition)*cameraSpeed;
+            Vector3 newCameraPos=tmpCameraPos + Camera.main.ScreenToViewportPoint(tmpClickPos-Input.mousePosition)*cameraSpeed;
+            if (newCameraPos.x < 0) newCameraPos.x = 0;
+            if (newCameraPos.y < 0) newCameraPos.y = 0;
+            if (newCameraPos.x > mapWidth) newCameraPos.x = mapWidth;
+            if (newCameraPos.y > mapHeight) newCameraPos.y = mapHeight;
+            Camera.main.transform.position = newCameraPos;
         }
         
         
@@ -654,11 +659,17 @@ public class MapEditor: MonoBehaviour
                 if (gridmap.getWallValue(x, y).wallval == 1)
                 {
                     wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                    if(mapStyle==0) wallmap.SetColor(new Vector3Int(x,y,0),Color.white);
                     wallVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite = wallSpritesArr[0];
                 }
                 else
                 {
-                    wallmap.SetTile(new Vector3Int(x,y,0),null);
+                    if (gridmap.getWallValue(x, y).wallval == 0) wallmap.SetTile(new Vector3Int(x, y, 0), null);
+                    else
+                    {
+                        wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                        if(mapStyle==0) wallmap.SetColor(new Vector3Int(x,y,0),Color.clear);
+                    }
                     wallVisualGrid.getValue(x, y).GetComponent<SpriteRenderer>().sprite =
                         wallSpritesArr[gridmap.getWallValue(x, y).wallval];
                 }

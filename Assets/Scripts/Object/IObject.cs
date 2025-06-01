@@ -138,6 +138,7 @@ public abstract class IObject : MonoBehaviour
         if (isMoving) return false;
         int dx = (int)dir.x, dy = (int)dir.y;
         if (!CheckInGrid(new GridPos(objPos.x + dx * 2, objPos.y + dy * 2))) return false;
+        if (MapManager.Instance.wallGrid[objPos.x + dx * 2, objPos.y + dy * 2]) return false;
         SetHitObjects(dir);
         if (hitFwall) return false;
         if (hitPalette && hitPalette.activeSelf) return false;

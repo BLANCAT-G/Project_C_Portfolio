@@ -211,6 +211,7 @@ public class Player : IObject
         Flip(dir);
         int dx = (int)dir.x, dy = (int)dir.y;
         if (!CheckInGrid(new GridPos(objPos.x + dx * 2, objPos.y + dy * 2))) return false;
+        if (MapManager.Instance.wallGrid[objPos.x + dx * 2, objPos.y + dy * 2]) return false;
         SetHitObjects(dir);
         
         if (hitFwall) return false;

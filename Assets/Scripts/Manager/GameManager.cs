@@ -256,9 +256,10 @@ public class GameManager : MonoBehaviour
         {
             if(obj.gameObject.activeSelf&&MapManager.Instance.gameGrid[obj.objPos.x,obj.objPos.y].Count>=2) obj.Interaction();
         }
+        
         foreach (IObject obj in objects)
         {
-            if(obj.gameObject.activeSelf&&MapManager.Instance.gameGrid[obj.objPos.x,obj.objPos.y].Count>=2) obj.Interaction();
+            if(obj.gameObject.activeSelf&&obj.GetComponent<IObject>().Type!=ObjType.Palette&&MapManager.Instance.gameGrid[obj.objPos.x,obj.objPos.y].Count>=2) obj.Interaction();
         }
         for (int i = colorTiles.Count - 1; i >= 0; i--)
         {

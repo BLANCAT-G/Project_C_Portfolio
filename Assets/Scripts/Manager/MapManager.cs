@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -17,6 +18,7 @@ public class MapManager : MonoBehaviour
     public Tilemap tilemap, wallmap;
 
     public List<GameObject>[,] gameGrid;
+    public bool[,] wallGrid;
     public List<GameObject> moveObjList=new List<GameObject>();
     public int mapWidth, mapHeight, mapStyle;
     public string fileName;
@@ -107,7 +109,12 @@ public class MapManager : MonoBehaviour
         stampSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].stamps;
         gridMap = new GridMap(mapWidth, mapHeight, new Vector3(0, 0));
         gameGrid = new List<GameObject>[mapWidth * 2 - 1, mapHeight * 2 - 1];
-        for (int x = 0; x < mapWidth*2-1; ++x) for (int y = 0; y < mapHeight * 2 - 1; ++y) gameGrid[x, y] = new List<GameObject>();
+        wallGrid = new bool[mapWidth * 2 - 1, mapHeight * 2 - 1];
+        for (int x = 0; x < mapWidth*2-1; ++x) for (int y = 0; y < mapHeight * 2 - 1; ++y)
+        {
+            gameGrid[x, y] = new List<GameObject>();
+            wallGrid[x, y] = false;
+        }
         
         gridMap.Load(saveObject);
 
@@ -139,7 +146,7 @@ public class MapManager : MonoBehaviour
                 {
                     obj = Instantiate(wall);
                     obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
-                    gameGrid[x*2,y*2].Add(obj);
+                    wallGrid[x * 2, y * 2] = true;
                     wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
                 }
                 else if (wallInfo.wallval != 0)
@@ -148,8 +155,10 @@ public class MapManager : MonoBehaviour
                     obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
                     obj.GetComponent<SpriteRenderer>().sprite = wallSpritesArr[wallInfo.wallval];
                     obj = Instantiate(wall);
+                    wallmap.SetTile(new Vector3Int(x,y,0),rulewall);
+                    if(mapStyle==0) wallmap.SetColor(new Vector3Int(x,y,0),Color.clear);
                     obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
-                    gameGrid[x*2,y*2].Add(obj);
+                    wallGrid[x * 2, y * 2] = true;
                 }
                 
             }
@@ -290,7 +299,7 @@ public class MapManager : MonoBehaviour
         
         for (int x = 0; x < mapWidth * 2 - 1; ++x) 
         {
-            for (int y = 1; y < mapHeight * 2 - 1; ++y)
+            for (int y = 0; y < mapHeight * 2 - 1; ++y)
             {
                 if ((x + y) % 2 == 0) continue;
                 LockInfo lockInfo = gridMap.getLockValue(x, y);
@@ -300,6 +309,7 @@ public class MapManager : MonoBehaviour
                 tmpLock.transform.position=new Vector3(x * 0.5f + 0.5f, y * 0.5f + 0.5f, 0);
                 if(x%2==1) tmpLock.transform.Rotate(0,0,90);
                 tmpLock.GetComponent<Palette>().KeyArr = lockInfo.KeyArr;
+                gameGrid[x,y].Add(tmpLock);
                 for (int i = 0; i < 3; ++i)
                 {
                     tmpLock.transform.Find("Key" + i.ToString()).GetComponent<SpriteRenderer>().color = lockInfo.KeyArr[i].ToColor();
