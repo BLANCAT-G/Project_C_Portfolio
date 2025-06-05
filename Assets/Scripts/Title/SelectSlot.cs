@@ -17,6 +17,9 @@ public class SelectSlot : MonoBehaviour
     public Sprite[] slotSprites,iconSprites;
     public TitleButton titleButton;
     public GameObject newSlotUI, deleteSlotUI;
+    
+    private static readonly string SAVE_FOLDER = Application.streamingAssetsPath + "/Saves/";
+    
     void Start()
     {
         for(int i=0;i<3;++i) SetSlot(i);
@@ -24,7 +27,7 @@ public class SelectSlot : MonoBehaviour
 
     public void SetSlot(int i)
     {
-        if (File.Exists(Application.dataPath + "/Saves/" + "save" + i.ToString() + ".cfy"))
+        if (File.Exists(SAVE_FOLDER + "save" + i.ToString() + ".cfy"))
         {
             saveExsist[i] = true;
             DataManager.Instance.curSlot = i;
@@ -76,11 +79,11 @@ public class SelectSlot : MonoBehaviour
     {
         GameObject goUI = titleButton.stackUI.Pop();
         goUI.SetActive(false);
-        if (File.Exists(Application.dataPath + "/Saves/" + "save" + num.ToString() + ".cfy"))
-            File.Delete(Application.dataPath + "/Saves/" + "save" + num.ToString() + ".cfy");
+        if (File.Exists(SAVE_FOLDER  + "save" + num.ToString() + ".cfy"))
+            File.Delete(SAVE_FOLDER  + "save" + num.ToString() + ".cfy");
         
-        if (File.Exists(Application.dataPath + "/Saves/" + "save" + num.ToString() + ".cfy.meta"))
-            File.Delete(Application.dataPath + "/Saves/" + "save" + num.ToString() + ".cfy.meta");
+        if (File.Exists(SAVE_FOLDER  + "save" + num.ToString() + ".cfy.meta"))
+            File.Delete(SAVE_FOLDER  + "save" + num.ToString() + ".cfy.meta");
         
         SetSlot(num);
         SoundBox.instance.PlaySFX("ButtonClick");

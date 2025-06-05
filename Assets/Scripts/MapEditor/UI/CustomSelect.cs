@@ -18,7 +18,7 @@ public class CustomSelect : MonoBehaviour
     public TMP_InputField fileNameField,mapNameField,mapStyleField;
     
     private const string SAVE_EXTENSION = "cfy";
-    private static readonly string SAVE_FOLDER = Application.dataPath + "/Maps/";
+    private static readonly string SAVE_FOLDER = Application.streamingAssetsPath + "/Maps/";
     
     
     private void Awake()

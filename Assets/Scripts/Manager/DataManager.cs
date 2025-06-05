@@ -34,7 +34,7 @@ public class DataManager : MonoBehaviour
     
     private const string SAVE_EXTENSION = "cfy";
 
-    private static readonly string SAVE_FOLDER = Application.dataPath + "/Saves/";
+    private static readonly string SAVE_FOLDER = Application.streamingAssetsPath + "/Saves/";
 
     private static bool isInit = false;
     // Start is called before the first frame update

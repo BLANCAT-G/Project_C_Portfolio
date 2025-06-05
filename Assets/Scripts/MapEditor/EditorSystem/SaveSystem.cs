@@ -7,7 +7,7 @@ public class SaveSystem
 {
     private const string SAVE_EXTENSION = "cfy";
 
-    private static readonly string SAVE_FOLDER = Application.dataPath + "/Maps/";
+    private static readonly string SAVE_FOLDER = Application.streamingAssetsPath + "/Maps/";
 
     private static bool isInit = false;
     // Start is called before the first frame update
