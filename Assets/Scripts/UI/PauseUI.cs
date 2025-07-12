@@ -7,19 +7,9 @@ using UnityEngine.SceneManagement;
 public class PauseUI : MonoBehaviour
 {
     public GameObject OptionUI;
-
-    public void Update()
-    {
-        if ( Input.GetKeyDown(KeyCode.Escape))
-        {
-            gameObject.SetActive(false);
-            GameManager.Instance.Resume();
-        }
-    }
-
     public void OnResumeButtonClick()
     {
-        gameObject.SetActive(false);
+        UIManager.Instance.CloseUI();
         GameManager.Instance.Resume();
     }
 
@@ -31,8 +21,9 @@ public class PauseUI : MonoBehaviour
 
     public void OnOptionButtonClick()
     {
+        UIManager.Instance.CloseUI();
         OptionUI.SetActive(true);
-        gameObject.SetActive(false);
+        UIManager.Instance.stackUI.Push(OptionUI);
     }
 
     public void OnMapButtonClick()

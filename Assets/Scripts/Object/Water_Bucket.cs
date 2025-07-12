@@ -19,19 +19,18 @@ public class Water_Bucket : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
                 case ObjType.Player:
-                    break;
                 case ObjType.BlackSmoke:
-                    break;
                 case ObjType.Eraser:
-                    break;
                 case ObjType.Brush:
-                    break;
                 case ObjType.Easel:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
                     break;
                 case ObjType.Acryl:
                     if (objColor == ColorType.None)
@@ -71,6 +70,7 @@ public class Water_Bucket : IObject
             }
             
         }
+        UpdateColor();
         StateUpdate();
     }
 }

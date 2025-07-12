@@ -17,12 +17,17 @@ public class Easel : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
-                case ObjType.TrailBrush: case ObjType.Mop:
+                case ObjType.TrailBrush: 
+                case ObjType.Mop:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole: 
                     break;
+                
                 case ObjType.Acryl:
                     if (colorSaved)
                     {
@@ -109,6 +114,7 @@ public class Easel : IObject
             }
             
         }
+        UpdateColor();
     }
 
     public override void ColorChange(ColorType cT)
@@ -125,6 +131,26 @@ public class Easel : IObject
             gameObject.GetComponent<SpriteRenderer>().sprite = easelSprites[1];
             transform.Find("Base").gameObject.SetActive(true);
             spriter.color = cT.ToColor();
+            colorSaved = true;
+        }
+        
+        if(isAlpha) OnAlpha();
+        else OffAlpha();
+    }
+    
+    public override void ToBlackColor()
+    {
+        if (colorType == ColorType.None)
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = easelSprites[0];
+            transform.Find("Base").gameObject.SetActive(false);
+            colorSaved = false;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = easelSprites[1];
+            transform.Find("Base").gameObject.SetActive(true);
+            spriter.color = Color.black;
             colorSaved = true;
         }
         

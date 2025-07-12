@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
+using UnityEditor.Rendering;
 using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -14,9 +16,10 @@ public class GameManager : MonoBehaviour
 
     public static bool isEditor;
     
-    
     public Player player;
     private bool isPaused = false;
+    private bool needStage4Preview;
+    public bool isPlayerBlack = false;
     public bool movable = true;
     public bool processing = false;
     public bool keydowndelay = false;
@@ -65,8 +68,15 @@ public class GameManager : MonoBehaviour
         
         if (!movable||keydowndelay)
             return;
-            
-        if(Input.GetKey(KeyCode.LeftArrow))
+
+        if (needStage4Preview && Input.anyKeyDown &&!Input.GetKey(KeyCode.Escape))
+        {
+            needStage4Preview = false;
+            MapManager.Instance.EndStage4Preview();
+            keydowndelay = true;
+            StartCoroutine(KeyDownDelayCoroutine());
+        }
+        else if(Input.GetKey(KeySetting.keys[KeyAction.Left]))
         {
             SaveDataAll();
             movable = false;
@@ -80,7 +90,7 @@ public class GameManager : MonoBehaviour
             }
             faceDir=Vector2.left;
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeySetting.keys[KeyAction.Right]))
         {
             SaveDataAll();
             movable = false;
@@ -94,7 +104,7 @@ public class GameManager : MonoBehaviour
             }
             faceDir=Vector2.right;
         }
-        else if (Input.GetKey(KeyCode.UpArrow))
+        else if (Input.GetKey(KeySetting.keys[KeyAction.Up]))
         {
             SaveDataAll();
             movable = false;
@@ -108,7 +118,7 @@ public class GameManager : MonoBehaviour
             }
             faceDir=Vector2.up;
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeySetting.keys[KeyAction.Down]))
         {
             SaveDataAll();
             movable = false;
@@ -122,47 +132,29 @@ public class GameManager : MonoBehaviour
             }
             faceDir = Vector2.down;
         }
-        else if (Input.GetKeyUp(KeyCode.LeftArrow))
+        else if (Input.GetKeyUp(KeySetting.keys[KeyAction.Left]))
         {
             keydowndelay = false;
         }
-        else if (Input.GetKeyUp(KeyCode.RightArrow))
+        else if (Input.GetKeyUp(KeySetting.keys[KeyAction.Right]))
         {
             keydowndelay = false;
         }
-        else if (Input.GetKeyUp(KeyCode.UpArrow))
+        else if (Input.GetKeyUp(KeySetting.keys[KeyAction.Up]))
         {
             keydowndelay = false;
         }
-        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        else if (Input.GetKeyUp(KeySetting.keys[KeyAction.Down]))
         {
             keydowndelay = false;
         }
-        else if (Input.GetKey(KeyCode.Z))
+        else if (Input.GetKey(KeySetting.keys[KeyAction.Undo]))
         {
             if (turnCount > 0)
             {
                 keydowndelay = true;
                 StartCoroutine(KeyDownDelayCoroutine());
-                foreach (IObject obj in objects)
-                {
-                    obj.Undo();
-                }
-
-                foreach (IObject obj in alphaObjs)
-                {
-                    obj.Undo();
-                }
-
-                for (int i=colorTiles.Count-1; i>=0;i--)
-                {
-                    colorTiles[i].Undo();
-                }
-
-                foreach (Filter filter in filters)
-                {
-                    filter.Undo();
-                }
+                UndoAll();
 
                 turnCount--;
             }
@@ -174,16 +166,6 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene("MapEditor");
                 Destroy(GameManager.Instance.gameObject);
             }
-            else
-            {
-                PausePanel.SetActive(true);
-                Pause();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            RestartPanel.SetActive(true);
-            Pause();
         }
     }
 
@@ -206,6 +188,7 @@ public class GameManager : MonoBehaviour
         palettes = MapManager.Instance.GetPalettes();
         filters = MapManager.Instance.GetFilters();
         alphaObjs = MapManager.Instance.GetAlphaObjs();
+        if (MapManager.Instance.mapStyle == 3) needStage4Preview= true;
     }
 
     public void Pause()
@@ -241,31 +224,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ResetObjectsList()
+    public void UndoAll()
     {
-        objects.Clear();
-        colorTiles.Clear();
-        palettes.Clear();
-        alphaObjs.Clear();
+        
+        for(int i=objects.Count-1;i>=0;i--)
+        {
+            objects[i].Undo();
+        }
+
+        foreach (IObject obj in alphaObjs)
+        {
+            obj.Undo();
+        }
+
+        foreach (Filter filter in filters)
+        {
+            filter.Undo();
+        }
     }
+    
 
     IEnumerator InteractionCoroutine()
     {
         processing = true;
         foreach (IObject obj in alphaObjs)
         {
-            if(obj.gameObject.activeSelf&&MapManager.Instance.gameGrid[obj.objPos.x,obj.objPos.y].Count>=2) obj.Interaction();
+            if (obj.gameObject.activeSelf && MapManager.Instance.gameGrid[obj.objPos.x, obj.objPos.y].Count >= 2 &&
+                MapManager.Instance.interactPosSet.Contains(new KeyValuePair<int, int>(obj.objPos.x, obj.objPos.y)))
+                obj.Interaction();
         }
         
         foreach (IObject obj in objects)
         {
-            if(obj.gameObject.activeSelf&&obj.GetComponent<IObject>().Type!=ObjType.Palette&&MapManager.Instance.gameGrid[obj.objPos.x,obj.objPos.y].Count>=2) obj.Interaction();
+            if(obj.gameObject.activeSelf&&obj.GetComponent<IObject>().Type!=ObjType.Palette&&MapManager.Instance.gameGrid[obj.objPos.x,obj.objPos.y].Count>=2&&
+               MapManager.Instance.interactPosSet.Contains(new KeyValuePair<int, int>(obj.objPos.x, obj.objPos.y))) obj
+                .Interaction();
         }
-        for (int i = colorTiles.Count - 1; i >= 0; i--)
-        {
-            if(colorTiles[i].gameObject.activeSelf&&MapManager.Instance.gameGrid[colorTiles[i].objPos.x,colorTiles[i].objPos.y].Count>=2)
-                colorTiles[i].Interaction();
-        }
+
+        MapManager.Instance.interactPosSet = new HashSet<KeyValuePair<int, int>>();
         yield return WSinterection;
         movable = true;
         processing = false;
@@ -286,4 +282,5 @@ public class GameManager : MonoBehaviour
     {
         PCHManager.TestSubColor(c1, c2);
     }
+    
 }

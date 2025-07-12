@@ -17,7 +17,20 @@ public class InkStone : IObject
         {
             if (!c.activeSelf) continue;
             if (c.gameObject == this.gameObject) continue;
-            c.GetComponent<IObject>().OffAlpha();
+            
+            IObject io = c.gameObject.GetComponent<IObject>();
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
+            ObjType objType = c.gameObject.GetComponent<IObject>().Type;
+
+            switch (objType)
+            {
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;
+                default:
+                    EffectManager.Instance.ExecuteEffect(EffectType.Interact, transform, colorType); SoundBox.instance.PlaySFX("Interact");
+                    c.GetComponent<IObject>().OffAlpha();
+                    break;
+            }
         }
     }
 }

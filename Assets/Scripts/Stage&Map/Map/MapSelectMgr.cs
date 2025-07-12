@@ -63,7 +63,7 @@ public class MapSelectMgr : MonoBehaviour
         {
             SceneManager.LoadScene("StageSelect");
         }
-        if (Input.GetKey(KeyCode.RightArrow) && !isMoving)
+        if (Input.GetKey(KeySetting.keys[KeyAction.Right]) && !isMoving)
         {
             tmpNode = curNode.MoveToRight();
             player.GetComponent<Player>().Flip(Vector3.right);
@@ -73,7 +73,7 @@ public class MapSelectMgr : MonoBehaviour
                 StartCoroutine(MoveCoroutine(tmpNode.transform.position));
             }
         }
-        if (Input.GetKey(KeyCode.LeftArrow) && !isMoving)
+        if (Input.GetKey(KeySetting.keys[KeyAction.Left]) && !isMoving)
         {
             tmpNode = curNode.MoveToLeft();
             player.GetComponent<Player>().Flip(Vector3.left);
@@ -83,7 +83,7 @@ public class MapSelectMgr : MonoBehaviour
                 StartCoroutine(MoveCoroutine(tmpNode.transform.position));
             }
         }
-        if (Input.GetKey(KeyCode.UpArrow) && !isMoving)
+        if (Input.GetKey(KeySetting.keys[KeyAction.Up]) && !isMoving)
         {
             tmpNode = curNode.MoveToUp();
             player.GetComponent<Player>().Flip(Vector3.up);
@@ -93,7 +93,7 @@ public class MapSelectMgr : MonoBehaviour
                 StartCoroutine(MoveCoroutine(tmpNode.transform.position));
             }
         }
-        if (Input.GetKey(KeyCode.DownArrow) && !isMoving)
+        if (Input.GetKey(KeySetting.keys[KeyAction.Down]) && !isMoving)
         {
             tmpNode = curNode.MoveToDown();
             player.GetComponent<Player>().Flip(Vector3.down);
@@ -128,6 +128,8 @@ public class MapSelectMgr : MonoBehaviour
             MapNodeArr[i].SetFileName( "map_" + stageNum.ToString() + "_" + i.ToString());
             if (Convert.ToBoolean(progress  & (1 << i))) MapNodeArr[i].UnLock();
             else MapNodeArr[i].Lock();
+            
+            if(stageNum==4 && i>4)MapNodeArr[i].Lock();
         }
 
         curNode = MapNodeArr[gameData.lastMap[gameData.curStage-1]];

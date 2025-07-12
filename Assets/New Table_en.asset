@@ -142,6 +142,46 @@ MonoBehaviour:
     m_Localized: Stepping Stones
     m_Metadata:
       m_Items: []
+  - m_Id: 116015413199761408
+    m_Localized: Secret Base
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015414688739328
+    m_Localized: Diving Force
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015416244826112
+    m_Localized: Ghost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015419034038272
+    m_Localized: Everlast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015417649917952
+    m_Localized: Reincarnation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015411186495488
+    m_Localized: Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015401367629824
+    m_Localized: Aurora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015408015601664
+    m_Localized: Discerning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120448334362963968
+    m_Localized: Shade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120448321184460800
+    m_Localized: Blackout
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

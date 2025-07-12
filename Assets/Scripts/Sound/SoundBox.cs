@@ -272,6 +272,28 @@ public class SoundBox : MonoBehaviour
         }
         return false;
     }
+
+    public void ConvertBlackBGM()
+    {
+        string bgmname;
+        Sound sound_Members = act_clips.Find((Sound x) => x.name == "Stage4_BGM");
+        if(sound_Members.audioClip==BGM.clip)
+        {
+            bgmname = "Stage4_BGM_B";
+        }
+        else
+        {
+            bgmname = "Stage4_BGM";
+        }
+        
+        float ratio = BGM.time / BGM.clip.length;
+
+        BGM.Stop();                   
+        Sound audioClip = act_clips.Find((Sound x) => x.name == bgmname);
+        BGM.clip = audioClip.audioClip; 
+        BGM.time = audioClip.audioClip.length * ratio;
+        BGM.Play();
+    }
 }
 
 

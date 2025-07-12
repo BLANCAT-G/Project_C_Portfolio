@@ -9,13 +9,6 @@ public class Player : IObject
     public Animator animator;
     public Animator animatorBase;
     public GameObject layoutGroup;
-    
-    // [SerializeField]
-    // private GameObject TrailEff;
-    // [SerializeField]
-    // private SpriteRenderer trailsr;
-
-    
 
     
     public override void Interaction()
@@ -28,10 +21,14 @@ public class Player : IObject
                 continue;
             IObject io= c.GetComponent<IObject>();
             if (isAlpha != io.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
             {
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;
                 case ObjType.Paint:
                     if (isBrush)
                     {
@@ -202,6 +199,7 @@ public class Player : IObject
                     break;
             }
         }
+        UpdateColor();
         StateUpdate();
     }
 
@@ -212,9 +210,9 @@ public class Player : IObject
         int dx = (int)dir.x, dy = (int)dir.y;
         if (!CheckInGrid(new GridPos(objPos.x + dx * 2, objPos.y + dy * 2))) return false;
         if (MapManager.Instance.wallGrid[objPos.x + dx * 2, objPos.y + dy * 2]) return false;
+        if (MapManager.Instance.wallGrid[objPos.x + dx, objPos.y + dy]) return false;
         SetHitObjects(dir);
         
-        if (hitFwall) return false;
         if (hitPalette && hitPalette.activeSelf) return false;
         else if (hitFilter)
         {
@@ -236,9 +234,9 @@ public class Player : IObject
             if (h.CompareTag("Wall"))
                 return false;
             IObject obj = h.gameObject.GetComponent<IObject>();
-            if (obj.isAlpha==isAlpha && obj.Type == ObjType.Tile && obj.colorType != colorType)
+            if ( obj.Type == ObjType.Tile && obj.isBlack==isBlack&&obj.colorType != colorType &&obj.isAlpha==isAlpha)
                 return false;
-            if (obj.is3D && (obj.Type!=ObjType.WoodHammer) && (isAcryl || obj.isAcryl) && obj.isAlpha==isAlpha)
+            if (obj.is3D && (obj.Type != ObjType.WoodHammer) &&obj.isBlack==isBlack&& (isAcryl || obj.isAcryl) && (obj.isAlpha == isAlpha || AlphaObjs.Contains(obj.Type) ))
             {
                 if (obj.MoveCheck(dir) == false)
                     return false;
@@ -286,8 +284,9 @@ public class Player : IObject
         {
             foreach (GameObject h in hit)
             {
-                if (!h.activeSelf) continue;
+                if (!h.activeSelf ) continue;
                 IObject obj = h.gameObject.GetComponent<IObject>();
+                if (obj.isAlpha != isAlpha) continue;
                 if (obj.is3D)
                 {
                     if (obj.colorType != ColorType.None)
@@ -318,7 +317,8 @@ public class Player : IObject
                 GameObject colorTile=Instantiate(MapManager.Instance.defaultColorTile);
                 colorTile.transform.position = transform.position;
                 colorTile.GetComponent<IObject>().colorType = this.colorType;
-                colorTile.GetComponent<IObject>().ColorChange(this.colorType);
+                colorTile.GetComponent<IObject>().isAlpha = this.isAlpha;
+                colorTile.GetComponent<IObject>().UpdateColor();
                 colorTile.GetComponent<IObject>().objPos = new GridPos(objPos);
                 MapManager.Instance.AddColorTile(colorTile.GetComponent<IObject>());
                 MapManager.Instance.gameGrid[objPos.x,objPos.y].Add(colorTile);
@@ -330,13 +330,14 @@ public class Player : IObject
             if (!h.activeSelf) continue;
             IObject obj = h.gameObject.GetComponent<IObject>();
             if (h.CompareTag("Wall")) continue;
-            if ( obj.is3D && (obj.Type!=ObjType.WoodHammer) && (isAcryl || obj.isAcryl) && obj.isAlpha==isAlpha)
+            if (obj.is3D && (obj.Type != ObjType.WoodHammer) &&obj.isBlack==isBlack&& (isAcryl || obj.isAcryl) && (obj.isAlpha == isAlpha || AlphaObjs.Contains(obj.Type)))
             {
                 obj.Move(dir);
             }
         }
         
         MapManager.Instance.moveObjList.Add(this.gameObject);
+        MapManager.Instance.interactPosSet.Add(new KeyValuePair<int, int>(objPos.x + (int)dir.x*2, objPos.y + (int)dir.y*2));
 
         if (!isAcryl)
             SoundBox.instance.PlaySFX("LevelMove");
@@ -349,7 +350,7 @@ public class Player : IObject
     
     public override void SaveData()
     {
-        ObjData newData = new ObjData(new GridPos(objPos), GameManager.Instance.faceDir,gameObject.activeSelf, isAcryl, isAlpha, isBrush, isSuperAcryl,isTrail,sandCount, colorType,acrylColor);
+        ObjData newData = new ObjData(new GridPos(objPos), GameManager.Instance.faceDir,gameObject.activeSelf, isAcryl, isAlpha, isBrush, isSuperAcryl,isTrail,isBlack,sandCount, colorType,acrylColor);
         moveLog.Push(newData);
     }
     public void Flip(Vector3 dir)
@@ -412,9 +413,17 @@ public class Player : IObject
         colorType = lastData.colorType;
         acrylColor = lastData.acrylColor;
         sandCount = lastData.sandCount;
+        
+        if (lastData.isBlack != isBlack)
+        {
+            if(lastData.isBlack) MoveToBlackWorld();
+            else MoveToColorWorld();
+        }
+        
         StateUpdate();
-        ColorChange(colorType);
+        UpdateColor();
         Flip(lastData.faceDir);
+        
         if (!objPos.Compare(lastData.objPos))
         {
             MapManager.Instance.gameGrid[objPos.x, objPos.y].Remove(this.gameObject);
@@ -446,20 +455,54 @@ public class Player : IObject
             }
         }
         
+        
         if(isAlpha) OnAlpha();
         else OffAlpha();
     }
 
-    private void Update()
+    public override void ToBlackColor()
     {
-        if (Input.GetKeyDown(KeyCode.V))
-            EffectManager.Instance.ExecuteEffect(EffectType.Vanish,transform);
+        if (colorType == ColorType.None)
+        {
+            spriter.color =  Color.black;
+            if (isAcryl)
+            {
+                AcrylEff.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+            }
+        }
+        else
+        {
+            spriter.color = Color.black;
+            if (isSuperAcryl)
+            {
+                AcrylEff.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+            }
+        }
+        
+        if(isAlpha) OnAlpha();
+        else OffAlpha();
     }
+    
     public void SetSandCount(uint i)
     {
         sandCount = i;
         sandCountText.gameObject.SetActive(true);
     }
 
-   
+    public override void MoveToBlackWorld()
+    {
+        base.MoveToBlackWorld();
+        MapManager.Instance.ChangeToBlack();
+        GameManager.Instance.isPlayerBlack = true;
+        SoundBox.instance.ConvertBlackBGM();
+    }
+
+    public override void MoveToColorWorld()
+    {
+        base.MoveToColorWorld();
+        MapManager.Instance.ChangeToColor();
+        GameManager.Instance.isPlayerBlack = false;
+        SoundBox.instance.ConvertBlackBGM();
+
+    }
 }

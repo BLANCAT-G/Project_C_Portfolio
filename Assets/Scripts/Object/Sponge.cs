@@ -17,17 +17,18 @@ public class Sponge : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
-            ObjType objType = c.gameObject.GetComponent<IObject>().Type;
-            ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
+            ObjType objType = io.Type;
+            ColorType objColor = io.colorType;
             switch (objType)
             {
                 case ObjType.Player:
                 case ObjType.BlackSmoke:
                 case ObjType.SandColor:
-                    break;
                 case ObjType.Tile:
-                    break;
                 case ObjType.Easel:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
                     break;
                 case ObjType.Sponge:
                     if (colorType != ColorType.None && objColor == ColorType.None)
@@ -65,6 +66,19 @@ public class Sponge : IObject
                         ColorChange(colorType);
                         EffectManager.Instance.ExecuteEffect(EffectType.ColorInteract, transform, colorType); SoundBox.instance.PlaySFX("ColorChange");
                         CompleteInteract(io);
+                    }
+                    else if (colorType == objColor)
+                    {
+                        CompleteInteract(io);
+                        gameObject.SetActive(false);
+                        EffectManager.Instance.ExecuteEffect(EffectType.Vanish, transform, colorType); SoundBox.instance.PlaySFX("InterVanish");
+                    }
+                    else
+                    {
+                        io.colorType = PCHManager.SubstractColor(objColor, colorType);
+                        io.ColorChange(io.colorType);
+                        gameObject.SetActive(false);
+                        EffectManager.Instance.ExecuteEffect(EffectType.ColorInteract, transform, colorType); SoundBox.instance.PlaySFX("ColorChange");
                     }
                     break;
                 case ObjType.Fixed_Paint:
@@ -114,6 +128,7 @@ public class Sponge : IObject
             }
             
         }
+        UpdateColor();
         StateUpdate();
     }
 
@@ -135,6 +150,19 @@ public class Sponge : IObject
         }
         if (cT == ColorType.None) spriter.color = baseColor;
         else spriter.color = cT.ToColor();
+        
+        if(isAlpha) OnAlpha();
+        else OffAlpha();
+    }
+
+    public override void ToBlackColor()
+    {
+        if (isSuperAcryl)
+        {
+            AcrylEff.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        }
+        if (colorType== ColorType.None) spriter.color = baseColor;
+        else spriter.color = Color.black;
         
         if(isAlpha) OnAlpha();
         else OffAlpha();

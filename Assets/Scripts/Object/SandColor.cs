@@ -30,6 +30,7 @@ public class SandColor : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
@@ -40,6 +41,8 @@ public class SandColor : IObject
                 case ObjType.Eraser:
                 case ObjType.Fixed_Water_Bucket:    
                 case ObjType.Tile:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
                     break;
                 case ObjType.Sponge:
                     if (objColor == ColorType.None)
@@ -103,7 +106,7 @@ public class SandColor : IObject
             }
             
         }
-        ColorChange(colorType);
+        UpdateColor();
         StateUpdate();
     }
 }

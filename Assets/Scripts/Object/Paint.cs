@@ -14,10 +14,15 @@ public class Paint : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.Sponge:    
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;
                 case ObjType.Paint:
                     if (this.GetInstanceID() < io.gameObject.GetInstanceID())
                         break;
@@ -41,21 +46,12 @@ public class Paint : IObject
                         CompleteInteract(io);
                     }
                     break;
-                case ObjType.Sponge:
-                    if (objColor != ColorType.None)
-                    {
-                        colorType = PCHManager.SubstractColor(colorType, objColor);
-                        ColorChange(colorType);
-                        EffectManager.Instance.ExecuteEffect(EffectType.ColorInteract, transform, colorType); SoundBox.instance.PlaySFX("ColorChange");
-                        CompleteInteract(io);
-                    }
-                    break;
                 default:
                     break;
             }
             
         }
-        ColorChange(colorType);
+        UpdateColor();
         StateUpdate();
     }
 }

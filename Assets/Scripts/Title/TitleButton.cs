@@ -7,24 +7,9 @@ using UnityEngine.SceneManagement;
 public class TitleButton : MonoBehaviour
 {
     public GameObject SaveUI, OptionUI;
-    public Stack<GameObject> stackUI=new Stack<GameObject>();
-    // Start is called before the first frame update
+
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(stackUI.Count>0)
-            {
-                GameObject goUI = stackUI.Pop();
-                goUI.SetActive(false);
-                if(goUI.name.Equals("Panel_Option"))
-                {
-                    goUI.GetComponent<OptionUI>().SaveOption();
-                }
-            }
-            
-        }
-
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.E))
         {
             GameManager.isEditor = true;
@@ -35,7 +20,7 @@ public class TitleButton : MonoBehaviour
     {
         GameManager.isEditor = false;
         SaveUI.SetActive(true);
-        stackUI.Push(SaveUI);
+        UIManager.Instance.stackUI.Push(SaveUI);
         SoundBox.instance.PlaySFX("ButtonClick");
     }
 
@@ -58,7 +43,7 @@ public class TitleButton : MonoBehaviour
     public void OnOptionButtonClick()
     {
         OptionUI.SetActive(true);
-        stackUI.Push(OptionUI);
+        UIManager.Instance.stackUI.Push(OptionUI);
         SoundBox.instance.PlaySFX("ButtonClick");
     }
     public void OnLocaleButtonClick()

@@ -20,17 +20,17 @@ public class WoodHammer : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
             {
                 case ObjType.Tile:
-                    break;
                 case ObjType.BlackSmoke:
-                    break;
                 case ObjType.Eraser:
-                    break;
                 case ObjType.Player:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
                     break;
                 case ObjType.WoodHammer:
                     if (this.GetInstanceID() < io.gameObject.GetInstanceID())
@@ -59,6 +59,8 @@ public class WoodHammer : IObject
                     break;
             }
         }
+        UpdateColor();
     }
+    
     
 }

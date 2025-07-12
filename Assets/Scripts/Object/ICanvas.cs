@@ -21,6 +21,8 @@ public class ICanvas : IObject
             if (c.gameObject == this.gameObject)
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
+            if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
@@ -29,6 +31,8 @@ public class ICanvas : IObject
                     break;
                 case ObjType.Easel:
                     break;
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole: 
                 case ObjType.Paint:
                     if (isBrush)
                     {
@@ -86,10 +90,10 @@ public class ICanvas : IObject
                     EffectManager.Instance.ExecuteEffect(EffectType.Pond, transform);  SoundBox.instance.PlaySFX("ColorRelease");
                     break;
                 case ObjType.Player:
-                    if(colorType==objColor)
+                    if(colorType==objColor && isAlpha==io.isAlpha)
                     {
                         EffectManager.Instance.ExecuteEffect(EffectType.Interact, transform, colorType); SoundBox.instance.PlaySFX("Interact");
-                        inGameController.Win(colorType);
+                        inGameController.ColorFul(colorType);
                         Destroy(GameManager.Instance.gameObject);
                         Destroy(MapManager.Instance.gameObject);
                     }
@@ -148,6 +152,7 @@ public class ICanvas : IObject
             }
             
         }
+        UpdateColor();
         StateUpdate();
     }
     
@@ -157,8 +162,8 @@ public class ICanvas : IObject
         int dx = (int)dir.x, dy = (int)dir.y;
         if (!CheckInGrid(new GridPos(objPos.x + dx * 2, objPos.y + dy * 2))) return false;
         if (MapManager.Instance.wallGrid[objPos.x + dx * 2, objPos.y + dy * 2]) return false;
+        if (MapManager.Instance.wallGrid[objPos.x + dx , objPos.y + dy]) return false;
         SetHitObjects(dir);
-        if (hitFwall) return false;
         if (hitPalette && hitPalette.activeSelf) return false;
         else if (hitFilter)
         {
@@ -180,9 +185,9 @@ public class ICanvas : IObject
             if (h.CompareTag("Wall"))
                 return false;
             IObject obj = h.gameObject.GetComponent<IObject>();
-            if (obj.isAlpha==isAlpha && obj.Type == ObjType.Tile && obj.colorType != colorType)
+            if (obj.isAlpha==isAlpha && obj.isBlack==isBlack&&obj.Type == ObjType.Tile && obj.colorType != colorType)
                 return false;
-            if (obj.is3D && (obj.Type!=ObjType.WoodHammer) && (isAcryl || obj.isAcryl) && obj.isAlpha==isAlpha)
+            if  (obj.is3D && (obj.Type != ObjType.WoodHammer) &&obj.isBlack==isBlack&& (isAcryl || obj.isAcryl) && (obj.isAlpha == isAlpha || AlphaObjs.Contains(obj.Type)))
             {
                 if (obj.MoveCheck(dir) == false)
                     return false;

@@ -142,6 +142,46 @@ MonoBehaviour:
     m_Localized: "\uC9D5\uAC80\uB2E4\uB9AC"
     m_Metadata:
       m_Items: []
+  - m_Id: 116015401367629824
+    m_Localized: "\uC624\uB85C\uB77C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015408015601664
+    m_Localized: "\uC548\uBAA9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015411186495488
+    m_Localized: "\uD0D0\uC0C9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015413199761408
+    m_Localized: "\uBE44\uBC00\uAE30\uC9C0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015414688739328
+    m_Localized: "\uCD94\uC9C4\uB825"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015416244826112
+    m_Localized: "\uC720\uB839"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015417649917952
+    m_Localized: "\uD658\uC0DD"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116015419034038272
+    m_Localized: "\uB9CC\uB144\uC124"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120448334362963968
+    m_Localized: "\uBE5B\uC774 \uB4E4\uC9C0 \uC54A\uB294 \uACF3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120448321184460800
+    m_Localized: "\uBE14\uB799\uC544\uC6C3"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

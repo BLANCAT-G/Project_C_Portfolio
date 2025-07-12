@@ -15,10 +15,13 @@ public class Stamp : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;
                 case ObjType.Player:
                     List<Palette> palettes = MapManager.Instance.GetPalettes();
                     foreach (Palette p in palettes)
@@ -38,5 +41,6 @@ public class Stamp : IObject
             }
             
         }
+        UpdateColor();
     }
 }

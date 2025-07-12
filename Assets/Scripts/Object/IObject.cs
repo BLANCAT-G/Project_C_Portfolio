@@ -16,11 +16,12 @@ public class ObjData
     public bool isBrush;
     public bool isSuperAcryl;
     public bool isTrail;
+    public bool isBlack;
     public uint sandCount;
     public ColorType colorType;
     public ColorType acrylColor;
     
-    public ObjData(GridPos pos, Vector3 faceDir,bool isActive, bool isAcryl, bool isAlpha, bool isBrush, bool isSuperAcryl,bool isTrail,uint sandCount, ColorType colorType,ColorType acrylColor)
+    public ObjData(GridPos pos, Vector3 faceDir,bool isActive, bool isAcryl, bool isAlpha, bool isBrush, bool isSuperAcryl,bool isTrail,bool isBlack,uint sandCount, ColorType colorType,ColorType acrylColor)
     {
         this.objPos = pos;
         this.faceDir = faceDir;
@@ -33,6 +34,7 @@ public class ObjData
         this.sandCount = sandCount;
         this.colorType = colorType;
         this.acrylColor = acrylColor;
+        this.isBlack = isBlack;
     }
 }
 
@@ -59,6 +61,8 @@ public enum ObjType
     Eraser,
     InkStone,
     Roller,
+    Fixed_BlackHole,
+    BlackHole,
     
     Filter=100,
     Palette,
@@ -88,11 +92,12 @@ public abstract class IObject : MonoBehaviour
     public bool isMoving;
     public bool isSuperAcryl = false;
     public bool isTrail;
+    public bool isBlack;
     public ColorType colorType;
     public ColorType acrylColor;
     public GridPos objPos;
 
-    private List<ObjType> NoneColorObjList =
+    protected static List<ObjType> NoneColorObjList =
         new List<ObjType>()
         {
             ObjType.Mop,
@@ -103,8 +108,12 @@ public abstract class IObject : MonoBehaviour
             ObjType.BlackSmoke,
             ObjType.Eraser,
             ObjType.InkStone,
-            ObjType.Roller
+            ObjType.Roller,
+            ObjType.BlackHole,
+            ObjType.Fixed_BlackHole
         };
+
+    protected static List<ObjType> AlphaObjs = new List<ObjType>() { ObjType.BlackSmoke, ObjType.Eraser };
     protected List<GameObject> hit;
     protected GameObject hitFilter, hitOppositeFilter,hitPalette,hitFwall;
     private WaitForSeconds ws = new WaitForSeconds(0.01f);
@@ -139,8 +148,8 @@ public abstract class IObject : MonoBehaviour
         int dx = (int)dir.x, dy = (int)dir.y;
         if (!CheckInGrid(new GridPos(objPos.x + dx * 2, objPos.y + dy * 2))) return false;
         if (MapManager.Instance.wallGrid[objPos.x + dx * 2, objPos.y + dy * 2]) return false;
+        if (MapManager.Instance.wallGrid[objPos.x + dx, objPos.y + dy]) return false;
         SetHitObjects(dir);
-        if (hitFwall) return false;
         if (hitPalette && hitPalette.activeSelf) return false;
         else if (hitFilter )
         {
@@ -163,8 +172,8 @@ public abstract class IObject : MonoBehaviour
                 return false;
             
             IObject obj = h.GetComponent<IObject>();
-            
-            if ( obj.is3D && (obj.Type!=ObjType.WoodHammer) && (isAcryl || obj.isAcryl) && obj.isAlpha==isAlpha)
+
+            if (obj.is3D && (obj.Type != ObjType.WoodHammer) && (isAcryl || obj.isAcryl) &&obj.isBlack==isBlack&& (obj.isAlpha == isAlpha || AlphaObjs.Contains(obj.Type) || AlphaObjs.Contains(Type))) 
             {
                 if (obj.MoveCheck(dir) == false)
                     return false;
@@ -235,12 +244,13 @@ public abstract class IObject : MonoBehaviour
             if (!h.activeSelf) continue;
             IObject obj = h.gameObject.GetComponent<IObject>();
             if (h.CompareTag("Wall")) continue;
-            if ( obj.is3D && (obj.Type!=ObjType.WoodHammer) && (isAcryl || obj.isAcryl) && obj.isAlpha==isAlpha)
+            if  (obj.is3D && (obj.Type != ObjType.WoodHammer) &&obj.isBlack==isBlack&& (isAcryl || obj.isAcryl) && (obj.isAlpha == isAlpha || AlphaObjs.Contains(obj.Type) || AlphaObjs.Contains(Type)))
             {
                 obj.Move(dir);
             }
         }
         MapManager.Instance.moveObjList.Add(this.gameObject);
+        MapManager.Instance.interactPosSet.Add(new KeyValuePair<int, int>(objPos.x + (int)dir.x*2, objPos.y + (int)dir.y*2));
         
         isMoving = true;
         StartCoroutine(MoveCoroutine(new GridPos(objPos.x + (int)dir.x*2, objPos.y + (int)dir.y*2)));
@@ -249,6 +259,8 @@ public abstract class IObject : MonoBehaviour
     protected IEnumerator MoveCoroutine(GridPos destPos)
     {
         Vector3 dest = destPos.getFilterCenterPos(Vector2.zero, 1);
+        if (isBlack) dest += new Vector3(100, 0, 0);
+        dest.z = transform.position.z;
         int k = 0;
         while (k++<6)
         {
@@ -285,10 +297,31 @@ public abstract class IObject : MonoBehaviour
         if(isAlpha) OnAlpha();
         else OffAlpha();
     }
+    
+    public virtual void ToBlackColor()
+    {
+        if (isSuperAcryl)
+        {
+            AcrylEff.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        }
+        if (!NoneColorObjList.Contains(Type))
+        {
+            spriter.color = Color.black;
+        }
+        
+        if(isAlpha) OnAlpha();
+        else OffAlpha();
+    }
+
+    public void UpdateColor()
+    {
+        ColorChange(colorType);
+        if(isBlack) ToBlackColor();
+    }
 
     public virtual void SaveData()
     {
-        ObjData newData = new ObjData(new GridPos(objPos.x,objPos.y), Vector3.left, gameObject.activeSelf, isAcryl, isAlpha, isBrush, isSuperAcryl,isTrail,sandCount,colorType,acrylColor);
+        ObjData newData = new ObjData(new GridPos(objPos.x,objPos.y), Vector3.left, gameObject.activeSelf, isAcryl, isAlpha, isBrush, isSuperAcryl,isTrail,isBlack,sandCount,colorType,acrylColor);
         moveLog.Push(newData);
     }
 
@@ -310,8 +343,15 @@ public abstract class IObject : MonoBehaviour
         colorType = lastData.colorType;
         acrylColor = lastData.acrylColor;
         sandCount = lastData.sandCount;
-        ColorChange(colorType);
+        
+        if (lastData.isBlack != isBlack)
+        {
+            if(lastData.isBlack) MoveToBlackWorld();
+            else MoveToColorWorld();
+        }
+        UpdateColor();
         StateUpdate();
+        
         if (!objPos.Compare(lastData.objPos))
         {
             MapManager.Instance.gameGrid[objPos.x, objPos.y].Remove(this.gameObject);
@@ -362,17 +402,12 @@ public abstract class IObject : MonoBehaviour
     public void SetHitObjects(Vector3 dir)
     {
         int dx = (int)dir.x, dy = (int)dir.y;
-        hitFilter = hitOppositeFilter = hitPalette = hitFwall= null;
+        hitFilter = hitOppositeFilter = hitPalette= null;
         hit = MapManager.Instance.gameGrid[objPos.x + dx * 2, objPos.y + dy * 2];
         List<GameObject> filters = MapManager.Instance.gameGrid[objPos.x + dx, objPos.y + dy];
         foreach (GameObject fo in filters)
         {
             if (!fo.activeSelf) continue;
-            if (fo.CompareTag("Wall"))
-            {
-                hitFwall = fo;
-                break;
-            }
             IObject io = fo.GetComponent<IObject>();
             if (io.Type == ObjType.Palette) hitPalette = fo;
             else if (io.Type == ObjType.Filter)
@@ -420,7 +455,8 @@ public abstract class IObject : MonoBehaviour
     public virtual void OnAlpha()
     {
         isAlpha = true;
-        if(colorType!=ColorType.None) spriter.color = new Color(spriter.color.r, spriter.color.g, spriter.color.b, 0.5f);
+        if (colorType != ColorType.None || NoneColorObjList.Contains(Type) || Type==ObjType.Player)
+            spriter.color = new Color(spriter.color.r, spriter.color.g, spriter.color.b, 0.5f);
         SpriteRenderer sre=GetComponent<SpriteRenderer>();
         if(spriter!=sre)
         {
@@ -431,7 +467,7 @@ public abstract class IObject : MonoBehaviour
     public virtual void OffAlpha()
     {
         isAlpha = false;
-        if (colorType != ColorType.None)
+        if (colorType != ColorType.None|| NoneColorObjList.Contains(Type) || Type==ObjType.Player)
             spriter.color = new Color(spriter.color.r, spriter.color.g, spriter.color.b, 1f);
         SpriteRenderer sre = GetComponent<SpriteRenderer>();
         if (spriter != sre)
@@ -439,4 +475,18 @@ public abstract class IObject : MonoBehaviour
             sre.color = new Color(sre.color.r, sre.color.g, sre.color.b, 1f);
         }
     }
+
+    public virtual void MoveToBlackWorld()
+    {
+        isBlack = true;
+        transform.position = objPos.getFilterCenterPos(Vector2.zero, 1)+new Vector2(100,0);
+    }
+    
+    public virtual void MoveToColorWorld()
+    {
+        isBlack = false;
+        transform.position = objPos.getFilterCenterPos(Vector2.zero, 1);
+    }
+
+    
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2215081938321345916}
   - component: {fileID: 7824034438502117467}
   - component: {fileID: 4283604934002539778}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: SandCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 826764852645376336}
   - component: {fileID: 4120948162393330657}
   - component: {fileID: 6695437899572964791}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 9011254858304370175}
   - component: {fileID: 2115366619429090603}
   - component: {fileID: 5785064078218738731}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,6 +606,10 @@ PrefabInstance:
     - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
       propertyPath: m_Name
       value: AcrylEff
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
       propertyPath: m_IsActive

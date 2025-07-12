@@ -19,10 +19,14 @@ public class Eraser : IObject
             if (c.gameObject == this.gameObject)
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
             {
+                case ObjType.BlackHole:
+                case ObjType.Fixed_BlackHole:    
+                    break;
                 case ObjType.Eraser:
                     if (this.GetInstanceID() < io.gameObject.GetInstanceID())
                         break;
@@ -31,6 +35,14 @@ public class Eraser : IObject
                     break;
                 case ObjType.BlackSmoke:
                     CompleteInteract(io);
+                    gameObject.SetActive(false);
+                    EffectManager.Instance.ExecuteEffect(EffectType.Vanish, transform, colorType); SoundBox.instance.PlaySFX("InterVanish");
+                    break;
+                case ObjType.Roller:
+                    gameObject.SetActive(false);
+                    EffectManager.Instance.ExecuteEffect(EffectType.Vanish, transform, colorType); SoundBox.instance.PlaySFX("InterVanish");
+                    break;
+                case ObjType.InkStone:
                     gameObject.SetActive(false);
                     EffectManager.Instance.ExecuteEffect(EffectType.Vanish, transform, colorType); SoundBox.instance.PlaySFX("InterVanish");
                     break;

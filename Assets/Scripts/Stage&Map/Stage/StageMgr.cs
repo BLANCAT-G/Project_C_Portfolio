@@ -23,7 +23,7 @@ public class StageMgr : MonoBehaviour
         {
             instance = this;
         }
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < 4; ++i)
         {
             stageNodes[i].isLock = DataManager.Instance.curData.mapProgress[i] > 1 ? false : true;
         }

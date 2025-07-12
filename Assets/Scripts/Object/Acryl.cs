@@ -23,15 +23,16 @@ public class Acryl : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
                 case ObjType.Tile:
-                    break;
                 case ObjType.Easel:
-                    break;
                 case ObjType.Fixed_Water_Bucket:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:    
                     break;
                 case ObjType.Paint:
                     colorType = objColor;
@@ -116,6 +117,7 @@ public class Acryl : IObject
             }
             
         }
+        UpdateColor();
         StateUpdate();
     }
     public override void Move(Vector3 dir)
@@ -157,7 +159,7 @@ public class Acryl : IObject
             if (!h.activeSelf) continue;
             IObject obj = h.gameObject.GetComponent<IObject>();
             if (h.CompareTag("Wall")) continue;
-            if ( obj.is3D && (obj.Type!=ObjType.WoodHammer) && (isAcryl || obj.isAcryl) && obj.isAlpha==isAlpha)
+            if(obj.is3D && (obj.Type != ObjType.WoodHammer) &&obj.isBlack==isBlack&& (isAcryl || obj.isAcryl) && (obj.isAlpha == isAlpha || AlphaObjs.Contains(obj.Type)))
             {
                 obj.Move(dir);
             }
@@ -165,6 +167,7 @@ public class Acryl : IObject
         
         
         MapManager.Instance.moveObjList.Add(this.gameObject);
+        MapManager.Instance.interactPosSet.Add(new KeyValuePair<int, int>(objPos.x + (int)dir.x*2, objPos.y + (int)dir.y*2));
         
         isMoving = true;
         StartCoroutine(MoveCoroutine(new GridPos(objPos.x + (int)dir.x*2, objPos.y + (int)dir.y*2)));

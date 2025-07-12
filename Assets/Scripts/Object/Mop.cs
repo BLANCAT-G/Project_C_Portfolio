@@ -19,6 +19,7 @@ public class Mop : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
@@ -30,7 +31,9 @@ public class Mop : IObject
                 case ObjType.Eraser:
                 case ObjType.Fixed_Water_Bucket:    
                 case ObjType.Easel:    
-                    break;              
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;            
                 case ObjType.WoodHammer:
                     if (this.GetInstanceID() < io.gameObject.GetInstanceID())
                         break;
@@ -64,6 +67,7 @@ public class Mop : IObject
                     break;
             }
         }
+        UpdateColor();
         StateUpdate();
     }
 

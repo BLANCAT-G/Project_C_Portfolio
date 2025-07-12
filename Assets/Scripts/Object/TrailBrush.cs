@@ -19,23 +19,20 @@ public class TrailBrush : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
             {
                 case ObjType.Player:
-                    break;
                 case ObjType.Fixed_Paint:
-                    break;
                 case ObjType.BlackSmoke:
-                    break;
                 case ObjType.Eraser:
-                    break;
                 case ObjType.Tile:
-                    break;
                 case ObjType.Easel:
-                    break;
                 case ObjType.Fixed_Water_Bucket:
+                case ObjType.InkStone: case ObjType.Roller:
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
                     break;
                 //물감처리 case color//sand
                 case ObjType.TrailBrush:
@@ -65,6 +62,7 @@ public class TrailBrush : IObject
                     break;
             }
         }
+        UpdateColor();
         StateUpdate();
     }
 }

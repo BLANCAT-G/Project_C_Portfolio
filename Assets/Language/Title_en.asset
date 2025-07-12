@@ -90,6 +90,42 @@ MonoBehaviour:
     m_Localized: TITLE
     m_Metadata:
       m_Items: []
+  - m_Id: 43523977829543936
+    m_Localized: Keys
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525796471369728
+    m_Localized: Left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525798866317312
+    m_Localized: Right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525811860271104
+    m_Localized: Undo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525813399580672
+    m_Localized: Restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525921507766272
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525934107455488
+    m_Localized: Default
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525752112410624
+    m_Localized: Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525794483269632
+    m_Localized: Down
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

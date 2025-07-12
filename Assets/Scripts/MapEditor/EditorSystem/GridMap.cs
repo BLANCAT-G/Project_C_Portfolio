@@ -75,13 +75,15 @@ public class ObjInfo
     public int sandCount;
     public bool isAlpha;
     public bool isAcryl;
-    public ObjInfo(ObjType objType, ColorType colorType,int sandCount=0,bool isAlpha=false,bool isAcryl=false)
+    public bool isBlack;
+    public ObjInfo(ObjType objType, ColorType colorType,int sandCount=0,bool isAlpha=false,bool isAcryl=false,bool isBlack=false)
     {
         this.objType = objType;
         this.colorType = colorType;
         this.sandCount = sandCount;
         this.isAlpha = isAlpha;
         this.isAcryl = isAcryl;
+        this.isBlack = isBlack;
     }
 
     public ObjInfo DeepCopy()
@@ -92,6 +94,7 @@ public class ObjInfo
         newObjInfo.sandCount = this.sandCount;
         newObjInfo.isAcryl = this.isAcryl;
         newObjInfo.isAlpha = this.isAlpha;
+        newObjInfo.isBlack = this.isBlack;
         return newObjInfo;
     }
 }
@@ -103,6 +106,7 @@ public class FilterSegment
     public ColorType colorType;
     public bool isOneTime;
     public bool isAlpha;
+    
     public FilterSegment(FilterType filterType, ColorType colorType,bool oneTime=false,bool isAlpha=false)
     {
         this.filterType = filterType;
@@ -126,17 +130,19 @@ public class FilterSegment
 public class FilterInfo
 {
     public FilterSegment filter1, filter2;  // [ up , down ] or [ left , right ]
-
-    public FilterInfo(FilterSegment filter1, FilterSegment filter2)
+    public bool isBlack;
+    public FilterInfo(FilterSegment filter1, FilterSegment filter2,bool isBlack=false)
     {
         this.filter1 =filter1;
         this.filter2 = filter2;
+        this.isBlack = isBlack;
     }
 
     public FilterInfo()
     {
         this.filter1 = new FilterSegment(FilterType.Null, ColorType.Red);
         this.filter2 = new FilterSegment(FilterType.Null, ColorType.Red);
+        this.isBlack = false;
     }
 
     public FilterInfo DeepCopy()

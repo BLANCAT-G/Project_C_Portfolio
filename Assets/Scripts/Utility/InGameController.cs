@@ -8,6 +8,8 @@ public class InGameController : MonoBehaviour
 {
     [SerializeField]
     private SceneTransition transition;
+    [SerializeField]
+    private ClearAnim clearanim;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,14 @@ public class InGameController : MonoBehaviour
         transition.cType = (ColorType)colorType;
         transition.SetColor();
         transition.Execute();
+        //SoundBox.instance.PlaySFX("GameClear");
+    }
+    public void ColorFul(ColorType ctype)
+    {
         SoundBox.instance.PlaySFX("GameClear");
+
+        clearanim.gameObject.transform.parent.gameObject.SetActive(true);
+        clearanim.colortype = ctype;
+        clearanim.sr.color=ctype.ToColor();
     }
 }

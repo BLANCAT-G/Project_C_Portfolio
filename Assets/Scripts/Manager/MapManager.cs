@@ -14,19 +14,22 @@ public class MapManager : MonoBehaviour
     
     private GridMap gridMap;
     public Tilemap tilemap, wallmap;
-
+    public Tilemap blacktilemap;
+    public RuleTile ruletile4b;
+    
     public List<GameObject>[,] gameGrid;
     public bool[,] wallGrid;
     public List<GameObject> moveObjList=new List<GameObject>();
+    public HashSet<KeyValuePair<int, int>> interactPosSet = new HashSet<KeyValuePair<int, int>>();
     public int mapWidth, mapHeight, mapStyle;
     public string fileName;
-    public GameObject obj,WallTile,defaultTile,defaultLock,defaultColorTile,background,bgDeco,keyguide;
+    public GameObject obj,WallTile,defaultTile,defaultLock,defaultColorTile,background,bg1Deco,bg4Deco,keyguide;
     public GameObject[] ObjectsArr;
     public GameObject[] FiltersArr;
     public GameObject wall,filterwall;
     
     
-    private Sprite[] tileSpritesArr,decoSpritesArr,wallSpritesArr,fwallSpritesArr,stampSpritesArr;
+    private Sprite[] tileSpritesArr,wallSpritesArr,fwallSpritesArr,stampSpritesArr;
     private RuleTile ruletile, rulewall;
     private TileInfo tileInfo;
     private DecoInfo decoInfo;
@@ -35,6 +38,7 @@ public class MapManager : MonoBehaviour
     private List<IObject> colorTiles,alphaObjs;
     private List<Filter> fiters;
     private List<Palette> palettes;
+    private List<IObject> initBlackObjects=new List<IObject>();
 
     public Camera renderCam;
     public CenterZoom CameraZoom;
@@ -42,7 +46,7 @@ public class MapManager : MonoBehaviour
     
     private static List<ObjType> NoneColorObjectsList = new List<ObjType>()
     {
-        ObjType.Mop, ObjType.TrailBrush, ObjType.Water_Bucket, ObjType.Fixed_Water_Bucket,ObjType.WoodHammer,ObjType.Easel,ObjType.BlackSmoke,ObjType.Eraser
+        ObjType.Mop, ObjType.TrailBrush, ObjType.Water_Bucket, ObjType.Fixed_Water_Bucket,ObjType.WoodHammer,ObjType.Easel,ObjType.BlackSmoke,ObjType.Eraser,ObjType.BlackHole,ObjType.Fixed_BlackHole
     };
 
     void Awake()
@@ -84,6 +88,7 @@ public class MapManager : MonoBehaviour
 
     public void SetMapObjectsByFileName(string fileName)
     {
+        this.fileName = fileName;
         GridMap.SaveObject saveObject = SaveSystem.LoadObject<GridMap.SaveObject>(fileName);
         SetMapObjectsBySaveObject(saveObject);
     }
@@ -102,7 +107,6 @@ public class MapManager : MonoBehaviour
         ruletile = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleTile;
         rulewall = SpriteContainer.Instance.mapSpritesArray[mapStyle].ruleWall;
         wallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].walls;
-        decoSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].decos;
         fwallSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].filterwalls;
         stampSpritesArr = SpriteContainer.Instance.mapSpritesArray[mapStyle].stamps;
         gridMap = new GridMap(mapWidth, mapHeight, new Vector3(0, 0));
@@ -129,14 +133,10 @@ public class MapManager : MonoBehaviour
                 
                 tileInfo = gridMap.getTileValue(x, y);
 
-                if(tileInfo.tileval!=0) tilemap.SetTile(new Vector3Int(x,y,0),ruletile);
-                
-                decoInfo = gridMap.getDecoValue(x, y);
-                if (decoInfo.decoval != 0)
+                if (tileInfo.tileval != 0)
                 {
-                    obj = Instantiate(defaultTile);
-                    obj.transform.position=new Vector3(x + 0.5f, y + 0.5f,0);
-                    obj.GetComponent<SpriteRenderer>().sprite = decoSpritesArr[decoInfo.decoval];
+                    tilemap.SetTile(new Vector3Int(x,y,0),ruletile);
+                    if(mapStyle==3) blacktilemap.SetTile(new Vector3Int(x,y,0),ruletile4b);
                 }
 
                 wallInfo = gridMap.getWallValue(x, y);
@@ -176,7 +176,7 @@ public class MapManager : MonoBehaviour
                     obj.GetComponent<SpriteRenderer>().sprite = fwallSpritesArr[fwallInfo.wallval];
                     obj = Instantiate(filterwall);
                     obj.transform.position=new Vector3(x * 0.5f + 0.5f, y * 0.5f + 0.5f, 0);
-                    gameGrid[x,y].Add(obj);
+                    wallGrid[x, y] = true;
                 }
             }
         }
@@ -192,7 +192,7 @@ public class MapManager : MonoBehaviour
                 obj.transform.position = new Vector3(x + 0.5f, y + 0.5f,0);
                 obj.GetComponent<IObject>().isAlpha = objInfo.isAlpha;
                 obj.GetComponent<IObject>().objPos = new GridPos(x * 2, y * 2);
-                gameGrid[x * 2, y * 2].Add(obj.gameObject);
+                
                 if (objInfo.objType == ObjType.Stamp)
                 {
                     obj.GetComponent<SpriteRenderer>().sprite = stampSpritesArr[(int)objInfo.colorType];
@@ -201,18 +201,28 @@ public class MapManager : MonoBehaviour
                 else if (!NoneColorObjectsList.Contains(objInfo.objType)) 
                 {
                     obj.GetComponent<IObject>().colorType = objInfo.colorType;
-                    obj.GetComponent<IObject>().ColorChange(objInfo.colorType);
                     if (objInfo.objType == ObjType.SandColor) obj.GetComponent<SandColor>().count = (uint)objInfo.sandCount;
                 }
+                
+                obj.GetComponent<IObject>().UpdateColor();
 
                 if (objInfo.objType == ObjType.Player)
                 {
                     GameManager.Instance.player = obj.GetComponent<Player>();
                 }
+
+                if (objInfo.isBlack)
+                {
+                    initBlackObjects.Add(obj.GetComponent<IObject>());
+                    obj.GetComponent<IObject>().MoveToBlackWorld();
+                }
                 
-                if(objInfo.objType==ObjType.Tile) colorTiles.Add(obj.GetComponent<IObject>());
-                else if(objInfo.objType==ObjType.BlackSmoke || objInfo.objType==ObjType.Eraser || objInfo.objType==ObjType.Roller || objInfo.objType==ObjType.InkStone) 
+                if(obj.GetComponent<IObject>().is3D) gameGrid[x * 2, y * 2].Insert(0,obj.gameObject);
+                else gameGrid[x * 2, y * 2].Add(obj.gameObject);
+                
+                if(objInfo.objType==ObjType.BlackSmoke || objInfo.objType==ObjType.Eraser || objInfo.objType==ObjType.Roller || objInfo.objType==ObjType.InkStone) 
                     alphaObjs.Add(obj.GetComponent<IObject>());
+                else if(obj.GetComponent<IObject>().is3D) mapObjects.Insert(0,obj.GetComponent<IObject>());
                 else mapObjects.Add(obj.GetComponent<IObject>());
             }
         }
@@ -328,8 +338,13 @@ public class MapManager : MonoBehaviour
         background.transform.position = new Vector3(mapWidth / 2+0.5f, mapHeight / 2+0.5f, 0);
         if (mapStyle == 0)
         {
-            bgDeco.SetActive(true);
-            bgDeco.transform.position=new Vector3(mapWidth / 2+0.5f, mapHeight / 2+0.5f, 0);
+            bg1Deco.SetActive(true);
+            bg1Deco.transform.position=new Vector3(mapWidth / 2+0.5f, mapHeight / 2+0.5f, 0);
+        }
+        else if (mapStyle == 3)
+        {
+            bg4Deco.SetActive(true);
+            bg4Deco.transform.position=new Vector3(mapWidth / 2+0.5f, mapHeight / 2+0.5f, 0);
         }
 
         if (fileName.Equals("map_1_1") || fileName.Equals("map_1_2"))
@@ -337,6 +352,20 @@ public class MapManager : MonoBehaviour
             keyguide.SetActive(true);
             keyguide.transform.position = new Vector3(mapWidth / 2 + 0.5f, -0.6f);
         }
+        
+        if(mapStyle==3) ChangeToBlack();
+    }
+
+    public void ChangeToBlack()
+    {
+        Camera.main.transform.position=new Vector3(mapWidth/2+0.5f,mapHeight/2+0.5f, -10)+new Vector3(100, 0, 0);
+        renderCam.transform.position =new Vector3(mapWidth/2+0.5f,mapHeight/2+0.5f, -10)+new Vector3(100, 0, 0);
+    }
+    
+    public void ChangeToColor()
+    {
+        Camera.main.transform.position = new Vector3(mapWidth / 2 + 0.5f, mapHeight / 2 + 0.5f, -10);
+        renderCam.transform.position = new Vector3(mapWidth / 2 + 0.5f, mapHeight / 2 + 0.5f, -10);
     }
    
 
@@ -348,30 +377,30 @@ public class MapManager : MonoBehaviour
             IObject io = obj.GetComponent<IObject>();
             gameGrid[io.objPos.x, io.objPos.y].Remove(obj);
             io.objPos = new GridPos(io.objPos.x + dx, io.objPos.y + dy);
-            gameGrid[io.objPos.x, io.objPos.y].Add(obj);
+            gameGrid[io.objPos.x, io.objPos.y].Insert(0,obj);
         }
 
         moveObjList = new List<GameObject>();
     }
-
-    public float RoundToNearestPixel(float pos)
-    {
-        float screenPixelsPerUnit = Screen.height / (Camera.main.orthographicSize * 2f);
-        float pixelValue = Mathf.Round(pos * screenPixelsPerUnit);
-
-        return pixelValue / screenPixelsPerUnit;
-    }
-    
     
 
     public void AddColorTile(IObject io)
     {
-        colorTiles.Add(io);
+        mapObjects.Add(io);
     }
 
     public void DeleteColorTile(IObject io)
     {
-        colorTiles.Remove(io);
+        mapObjects.Remove(io);
+    }
+
+    public void EndStage4Preview()
+    {
+        ChangeToColor();
+        foreach (IObject io in initBlackObjects)
+        {
+            io.ToBlackColor();
+        }
     }
     
 

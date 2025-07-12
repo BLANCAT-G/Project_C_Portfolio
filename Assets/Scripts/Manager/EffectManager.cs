@@ -36,6 +36,7 @@ public class EffectManager : MonoBehaviour
     // Start is called before the first frame update
     public void ExecuteEffect(EffectType type,Transform transform,ColorType colorType=ColorType.White)
     {
+        if (GameManager.Instance.isPlayerBlack) colorType = ColorType.Black;
         effColorType=colorType;
         GameObject go=Instantiate(effectPrefab[(int)type], transform.position,Quaternion.identity);
         if(type==EffectType.ColorInteract)

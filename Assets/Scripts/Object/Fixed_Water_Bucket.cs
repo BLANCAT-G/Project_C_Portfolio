@@ -19,11 +19,15 @@ public class Fixed_Water_Bucket : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
             {
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;
                 case ObjType.Paint: case ObjType.Water_Bucket: case ObjType.SandColor: case ObjType.TrailBrush: case ObjType.Mop:
+                    
                     EffectManager.Instance.ExecuteEffect(EffectType.ColorInteract, transform);
                     CompleteInteract(io);
                     break;
@@ -39,5 +43,6 @@ public class Fixed_Water_Bucket : IObject
             }
             
         }
+        UpdateColor();
     }
 }

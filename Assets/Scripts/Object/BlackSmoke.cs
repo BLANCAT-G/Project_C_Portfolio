@@ -18,11 +18,16 @@ public class BlackSmoke : IObject
             if (!c.activeSelf) continue;
             if (c.gameObject == this.gameObject)
                 continue;
+            
             IObject io = c.gameObject.GetComponent<IObject>();
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
             {
+                case ObjType.BlackHole:
+                case ObjType.Fixed_BlackHole: 
+                    break;
                 case ObjType.BlackSmoke:
                     if (this.GetInstanceID() < io.gameObject.GetInstanceID())
                         break;
@@ -31,6 +36,14 @@ public class BlackSmoke : IObject
                 case ObjType.Eraser:
                     CompleteInteract(io);
                     gameObject.SetActive(false);
+                    break;
+                case ObjType.Roller:
+                    gameObject.SetActive(false);
+                    EffectManager.Instance.ExecuteEffect(EffectType.Vanish, transform); SoundBox.instance.PlaySFX("InterVanish");
+                    break;
+                case ObjType.InkStone:
+                    gameObject.SetActive(false);
+                    EffectManager.Instance.ExecuteEffect(EffectType.Vanish, transform); SoundBox.instance.PlaySFX("InterVanish");
                     break;
                 default:
                     io.OffAlpha();

@@ -17,6 +17,7 @@ public class Fixed_Paint : IObject
             
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
@@ -28,5 +29,6 @@ public class Fixed_Paint : IObject
             }
             
         }
+        UpdateColor();
     }
 }

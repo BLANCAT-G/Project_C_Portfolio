@@ -69,7 +69,6 @@ public class MapEditor: MonoBehaviour
     
     private GridMap gridmap;
     public Tilemap tilemap,wallmap;
-    public RuleTile[] ruletiles,rulewalls;
     private RuleTile ruletile, rulewall;
     
     private Grid<GameObject> tileVisualGrid,
@@ -94,32 +93,48 @@ public class MapEditor: MonoBehaviour
     public PaletteMode paletteMode;
     public float cameraSpeed;
     public string loadFileName;
-    public int mapStyle;
+    private int mapStyle;
     
     private bool needUpdate;
     private bool needSave;
     private bool playerExist = false;
+    private bool isBlack = false;
+    private Transform ColorWorld, BlackWorld;
     private Transform Tiles, Decos, Walls, Objects, Filters,Gridline;
 
     private Vector3 mousePos;
     private GridPos curPos;
     private GameObject curEditUI;
-    public GameObject selectOutline,curPosOutline;
+    
+    [Space(15f)]
+    public GameObject selectOutline;
+    public GameObject curPosOutline;
+    public Sprite[] curGridSprites;
 
     private static List<ObjType> NoneColorObjectsList = new List<ObjType>()
     {
         ObjType.Mop, ObjType.TrailBrush, ObjType.Water_Bucket, ObjType.Fixed_Water_Bucket,ObjType.WoodHammer
     };
-    public int mapWidth, mapHeight;
+    private int mapWidth, mapHeight;
     [HideInInspector]
     public Sprite[] tileSpritesArr, decoSpritesArr, wallSpritesArr,fwallSpritesArr, objSpritesArr, objBaseSpritesArr, noneColorObjSpritesArr,filterSpritesArr,stampSpritesArr;
     private Sprite baseTile;
     
-    public GameObject defaultTile,defaultObj,defaultLock,nullTile,wallTile,gridOutline;
+    [Space(15f)]
     public ButtonSetter buttonSetter;
-    public GameObject optionUI,objEditUI,sandEditUI,filterEditUI,lockEditUI;
+
+    public GameObject defaultTile, defaultObj, defaultFilter,defaultLock,nullTile,wallTile,gridOutline;
+    
+    
+    [Space(15f)]
     public Image outlineUI;
-    public TMP_InputField widthField, heightField;
+    public GameObject optionUI,objEditUI,sandEditUI,filterEditUI,lockEditUI;
+    public GameObject swapWorldButton;
+    
+    
+    [Space(15f)]
+    public TMP_InputField widthField;
+    public TMP_InputField heightField;
     public TMP_Dropdown mapStyleDropdown;
     public TextMeshProUGUI mapName;
     
@@ -143,6 +158,8 @@ public class MapEditor: MonoBehaviour
         Objects=transform.Find("Objects");
         Filters = transform.Find("Filters");
         Gridline = transform.Find("Gridline");
+        ColorWorld = transform.Find("ColorWorld");
+        BlackWorld = transform.Find("BlackWorld");
         Init();
     }
 
@@ -155,6 +172,7 @@ public class MapEditor: MonoBehaviour
             CloseCurEditUI();
         }
         curPosOutline.SetActive(false);
+        curPosOutline.transform.localRotation=Quaternion.Euler(0,0,0);
         curPos = null;
         
         if (isPause) return;
@@ -167,7 +185,9 @@ public class MapEditor: MonoBehaviour
             {
                 curPos=gridmap.getFilterPos(mousePos);
                 curPosOutline.SetActive(true);
+                curPosOutline.GetComponent<SpriteRenderer>().sprite = curGridSprites[1];
                 curPosOutline.transform.position = curPos.getFilterCenterPos(Vector2.zero, 1);
+                if(curPos.x%2==1) curPosOutline.transform.localRotation=Quaternion.Euler(0,0,90f);
             }
         }
         else if (gridmap.inBoundary(mousePos))
@@ -175,6 +195,7 @@ public class MapEditor: MonoBehaviour
             curPos = gridmap.getPos(mousePos);
             curPosOutline.SetActive(true);
             curPosOutline.transform.position = curPos.getCenterPos(Vector2.zero, 1);
+            curPosOutline.GetComponent<SpriteRenderer>().sprite = curGridSprites[0];
         }
         
 
@@ -292,10 +313,6 @@ public class MapEditor: MonoBehaviour
                     {
                         gridmap.setValue(filtervalue.DeepCopy(), mousePos);
                     }
-                    else
-                    {
-                        gridmap.setValue(new FilterInfo(),mousePos);
-                    }
                 }
                 else if (paletteMode == PaletteMode.Lock && gridmap.inFilterBoundary(mousePos))
                 {
@@ -339,7 +356,9 @@ public class MapEditor: MonoBehaviour
                             {
                                 if (!playerExist)
                                 {
-                                    gridmap.setValue(objvalue.DeepCopy(),mousePos);
+                                    ObjInfo tmpinfo = objvalue.DeepCopy();
+                                    tmpinfo.isBlack = isBlack;
+                                    gridmap.setValue(tmpinfo,mousePos);
                                     gridmap.setValue(new WallInfo(0),mousePos);
                                     gridmap.setValue(new TileInfo(1),mousePos);
                                     playerExist = true;
@@ -347,8 +366,9 @@ public class MapEditor: MonoBehaviour
                             }
                             else
                             {
-                                ObjInfo objInfo = gridmap.getObjValue(mousePos);
-                                gridmap.setValue(objvalue.DeepCopy(),mousePos);
+                                ObjInfo tmpinfo = objvalue.DeepCopy();
+                                tmpinfo.isBlack = isBlack;
+                                gridmap.setValue(tmpinfo,mousePos);
                                 gridmap.setValue(new WallInfo(0),mousePos);
                                 gridmap.setValue(new TileInfo(1),mousePos);
                                 CheckPlayer();
@@ -529,13 +549,11 @@ public class MapEditor: MonoBehaviour
         {
             for (int y = 0; y < mapHeight * 2 - 1; y+=2)
             {
-                GameObject tmpSegment1 = Instantiate(defaultObj, Filters),
-                    tmpSegment2 = Instantiate(defaultObj, Filters);
+                GameObject tmpSegment1 = Instantiate(defaultFilter, Filters),
+                    tmpSegment2 = Instantiate(defaultFilter, Filters);
                 
                 tmpSegment1.transform.position = filterVisualGrid1.getCenterPosition(x, y);
                 tmpSegment2.transform.position = filterVisualGrid2.getCenterPosition(x, y);
-                tmpSegment1.GetComponent<SpriteRenderer>().sortingOrder = 7;
-                tmpSegment2.GetComponent<SpriteRenderer>().sortingOrder = 7;
                 tmpSegment1.transform.Rotate(0,0,90);
                 tmpSegment2.transform.Rotate(0,0,-90);
                 filterVisualGrid1.setValue(x,y,tmpSegment1);
@@ -546,13 +564,11 @@ public class MapEditor: MonoBehaviour
         {
             for (int y = 1; y < mapHeight * 2 - 1; y+=2)
             {
-                GameObject tmpSegment1 = Instantiate(defaultObj, Filters),
-                    tmpSegment2 = Instantiate(defaultObj, Filters);
+                GameObject tmpSegment1 = Instantiate(defaultFilter, Filters),
+                    tmpSegment2 = Instantiate(defaultFilter, Filters);
                 
                 tmpSegment1.transform.position = filterVisualGrid1.getCenterPosition(x, y);
                 tmpSegment2.transform.position = filterVisualGrid2.getCenterPosition(x, y);
-                tmpSegment1.GetComponent<SpriteRenderer>().sortingOrder = 7;
-                tmpSegment2.GetComponent<SpriteRenderer>().sortingOrder = 7;
                 tmpSegment2.transform.Rotate(0,0,180);
                 filterVisualGrid1.setValue(x,y,tmpSegment1);
                 filterVisualGrid2.setValue(x,y,tmpSegment2);
@@ -614,6 +630,9 @@ public class MapEditor: MonoBehaviour
         }
         
         mapStyle = saveObject.mapStyle;
+        if(mapStyle==3) swapWorldButton.SetActive(true);
+        else swapWorldButton.SetActive(false);
+        
         mapHeight = saveObject.height;
         mapWidth = saveObject.width;
         mapName.text = saveObject.mapName;
@@ -717,11 +736,21 @@ public class MapEditor: MonoBehaviour
             {
                 FilterInfo filterInfo = gridmap.getFilterValue(x, y);
                 GameObject tmpSegment1 = filterVisualGrid1.getValue(x, y), tmpSegment2 = filterVisualGrid2.getValue(x, y);
-                SpriteRenderer spriteRenderer1 = tmpSegment1.GetComponent<SpriteRenderer>(),spriteRenderer2=tmpSegment2.GetComponent<SpriteRenderer>();
-                spriteRenderer1.sprite = filterSpritesArr[(int)filterInfo.filter1.filterType];
-                spriteRenderer2.sprite = filterSpritesArr[(int)filterInfo.filter2.filterType];
-                spriteRenderer1.color = filterInfo.filter1.colorType.ToColor();
-                spriteRenderer2.color = filterInfo.filter2.colorType.ToColor();
+                if (filterInfo.filter1.filterType != FilterType.Null)
+                {
+                    tmpSegment1.GetComponent<Filter>().filterType = filterInfo.filter1.filterType;
+                    tmpSegment1.GetComponent<Filter>().ColorChange(filterInfo.filter1.colorType);
+                    tmpSegment1.SetActive(true);
+                }
+                else tmpSegment1.SetActive(false);
+                
+                if (filterInfo.filter2.filterType != FilterType.Null)
+                {
+                    tmpSegment2.GetComponent<Filter>().filterType = filterInfo.filter2.filterType;
+                    tmpSegment2.GetComponent<Filter>().ColorChange(filterInfo.filter2.colorType);
+                    tmpSegment2.SetActive(true);
+                }
+                else tmpSegment2.SetActive(false);
             }
         }
         for (int x = 0; x < mapWidth * 2 - 1; x+=2) // 가로 필터
@@ -730,11 +759,21 @@ public class MapEditor: MonoBehaviour
             {
                 FilterInfo filterInfo = gridmap.getFilterValue(x, y);
                 GameObject tmpSegment1 = filterVisualGrid1.getValue(x, y), tmpSegment2 = filterVisualGrid2.getValue(x, y);
-                SpriteRenderer spriteRenderer1 = tmpSegment1.GetComponent<SpriteRenderer>(),spriteRenderer2=tmpSegment2.GetComponent<SpriteRenderer>();
-                spriteRenderer1.sprite = filterSpritesArr[(int)filterInfo.filter1.filterType];
-                spriteRenderer2.sprite = filterSpritesArr[(int)filterInfo.filter2.filterType];
-                spriteRenderer1.color = filterInfo.filter1.colorType.ToColor();
-                spriteRenderer2.color = filterInfo.filter2.colorType.ToColor();
+                if (filterInfo.filter1.filterType != FilterType.Null)
+                {
+                    tmpSegment1.GetComponent<Filter>().filterType = filterInfo.filter1.filterType;
+                    tmpSegment1.GetComponent<Filter>().ColorChange(filterInfo.filter1.colorType);
+                    tmpSegment1.SetActive(true);
+                }
+                else tmpSegment1.SetActive(false);
+                
+                if (filterInfo.filter2.filterType != FilterType.Null)
+                {
+                    tmpSegment2.GetComponent<Filter>().filterType = filterInfo.filter2.filterType;
+                    tmpSegment2.GetComponent<Filter>().ColorChange(filterInfo.filter2.colorType);
+                    tmpSegment2.SetActive(true);
+                }
+                else tmpSegment2.SetActive(false);
             }
         }
         for (int x = 0; x < mapWidth * 2 - 1;++x) 
@@ -796,6 +835,9 @@ public class MapEditor: MonoBehaviour
         mapStyle = style;
         SetSprites();
         buttonSetter.RefreshButtonSprites();
+        
+        if(mapStyle==3) swapWorldButton.SetActive(true);
+        else swapWorldButton.SetActive(false);
         
         for (int x = -1; x <= mapWidth; ++x)
         {
@@ -896,6 +938,7 @@ public class MapEditor: MonoBehaviour
         if (paletteMode == PaletteMode.Object) objvalue.colorType = colorvalue;
         else if (paletteMode == PaletteMode.Filter) filtervalue.filter1.colorType = filtervalue.filter2.colorType=colorvalue;
     }
+    
 
     public void CloseCurEditUI()
     {
@@ -949,6 +992,14 @@ public class MapEditor: MonoBehaviour
         ChangeProperty(int.Parse(widthField.text),int.Parse(heightField.text),mapStyleDropdown.value);
         optionUI.SetActive(false);
         Resume();
+    }
+    
+    public void SwapColorBlackWorld()
+    {
+        isBlack = !isBlack;
+        ColorWorld.gameObject.SetActive(!isBlack);
+        BlackWorld.gameObject.SetActive(isBlack);
+        swapWorldButton.GetComponent<Image>().color = isBlack ? Color.black : Color.white;
     }
     
 }

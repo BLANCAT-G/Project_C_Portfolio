@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 4320755381007317494}
   - component: {fileID: 118487449207815496}
   - component: {fileID: 4201228712265323139}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: EffectGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 5681217409842704093}
   - component: {fileID: 1073675212756714561}
   - component: {fileID: 3408112619797383660}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 5434190480334400539}
   - component: {fileID: 6129386607636402697}
   - component: {fileID: 1458679315659876211}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: SandCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +672,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 650544988349332470}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 6958477976651287279}
   - component: {fileID: 4543880103257810253}
   - component: {fileID: 5442965363668684037}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Icon_Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 8257004692837315656}
   - component: {fileID: 1312038799960280739}
   - component: {fileID: 1102202328947377656}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Icon_Brush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,6 +899,10 @@ PrefabInstance:
       value: AcrylEff
       objectReference: {fileID: 0}
     - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -977,6 +981,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eff_TrailOut
       objectReference: {fileID: 0}
+    - target: {fileID: 3643522314946004875, guid: f5f5b64d511b17c4d822369c7f6a90e3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1046,6 +1054,10 @@ PrefabInstance:
     - target: {fileID: 8138894751367596306, guid: 9d081b3d839957b4cb44adabacbb23bd, type: 3}
       propertyPath: m_Name
       value: Eff_TrailColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8138894751367596306, guid: 9d081b3d839957b4cb44adabacbb23bd, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -22,6 +22,7 @@ public class Brush : IObject
             if (c.gameObject == this.gameObject) continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = c.gameObject.GetComponent<IObject>().Type;
             ColorType objColor = c.gameObject.GetComponent<IObject>().colorType;
             switch (objType)
@@ -29,10 +30,12 @@ public class Brush : IObject
                 case ObjType.Player:
                 case ObjType.Canvas:
                 case ObjType.BlackSmoke:
-                    break;
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole: 
                 case ObjType.Eraser:
                     break;
                 case ObjType.Easel:
+                    break;
+                case ObjType.InkStone: case ObjType.Roller:
                     break;
                 case ObjType.Brush:
                     if(colorType!=ColorType.None&& objColor== ColorType.None)
@@ -131,7 +134,7 @@ public class Brush : IObject
             }
 
         }
-        ColorChange(colorType);
+        UpdateColor();
         StateUpdate();
     }
     public override void ColorChange(ColorType cT)
@@ -162,5 +165,30 @@ public class Brush : IObject
             transform.Find("Base").gameObject.SetActive(true);
             spriter.color = cT.ToColor();
         }
+        
+        if(isAlpha) OnAlpha();
+        else OffAlpha();
+    }
+    
+    public override void ToBlackColor()
+    {
+        if (isSuperAcryl)
+        {
+            AcrylEff.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        }
+        if (colorType == ColorType.None)
+        {
+            animator.SetBool("isNone",true);
+            transform.Find("Base").gameObject.SetActive(false);
+        }
+        else
+        {
+            animator.SetBool("isNone",false);
+            transform.Find("Base").gameObject.SetActive(true);
+            spriter.color = Color.black;
+        }
+        
+        if(isAlpha) OnAlpha();
+        else OffAlpha();
     }
 }

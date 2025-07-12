@@ -87,6 +87,42 @@ MonoBehaviour:
     m_Key: IO_TITLE
     m_Metadata:
       m_Items: []
+  - m_Id: 43523977829543936
+    m_Key: O_KEY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525752112410624
+    m_Key: KEY_UP1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525794483269632
+    m_Key: KEY_DOWN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525796471369728
+    m_Key: KEY_LEFT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525798866317312
+    m_Key: KEY_RIGHT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525811860271104
+    m_Key: KEY_UNDO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525813399580672
+    m_Key: KEY_RESTART
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525921507766272
+    m_Key: KEY_SAVE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43525934107455488
+    m_Key: KEY_DEFAULT
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

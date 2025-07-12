@@ -330,6 +330,10 @@ PrefabInstance:
       value: AcrylEff
       objectReference: {fileID: 0}
     - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051390014661002860, guid: 64e6972af3c78b947a7d25b433ad0f44, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

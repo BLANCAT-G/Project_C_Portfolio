@@ -15,10 +15,13 @@ public class Tile : IObject
                 continue;
             IObject io = c.gameObject.GetComponent<IObject>();
             if (io.isAlpha != this.isAlpha) continue;
+            if (!GameManager.Instance.isPlayerBlack && (io.isBlack || isBlack)) continue;
             ObjType objType = io.Type;
             ColorType objColor = io.colorType;
             switch (objType)
             {
+                case ObjType.BlackHole: case ObjType.Fixed_BlackHole:
+                    break;
                 case ObjType.Paint:
                 case ObjType.SandColor:
                     colorType = objColor;
@@ -68,6 +71,7 @@ public class Tile : IObject
 
             }
         }
+        UpdateColor();
     }
     
     public override void Undo()
@@ -89,8 +93,16 @@ public class Tile : IObject
         colorType = lastData.colorType;
         acrylColor = lastData.acrylColor;
         sandCount = lastData.sandCount;
-        ColorChange(colorType);
+
+        if (lastData.isBlack != isBlack)
+        {
+            if(lastData.isBlack) MoveToBlackWorld();
+            else MoveToColorWorld();
+        }
+        
+        UpdateColor();
         StateUpdate();
+        
         if (!objPos.Compare(lastData.objPos))
         {
             MapManager.Instance.gameGrid[objPos.x, objPos.y].Remove(this.gameObject);

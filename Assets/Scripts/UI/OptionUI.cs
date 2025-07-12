@@ -26,6 +26,8 @@ public class OptionUI : MonoBehaviour
     [SerializeField]
     private int curResolutionIdx;
     private List<KeyValuePair<int, int>> resolutionList;
+
+    public GameObject keyUI;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,11 +63,6 @@ public class OptionUI : MonoBehaviour
     {
         BGMValue = BGMVolume.value;
         SFXValue = SFXVolume.value;
-        if (GameManager.Instance && Input.GetKeyDown(KeyCode.Escape))
-        {
-            gameObject.SetActive(false);
-            GameManager.Instance.Resume();
-        }
     }
 
     public void ToggleFullScreen()
@@ -113,13 +110,13 @@ public class OptionUI : MonoBehaviour
 
     public void OnCloseButtonClick()
     {
-        gameObject.SetActive(false);
         if (GameManager.Instance)
         {
             GameManager.Instance.Resume();
         }
         SaveOption();
         SoundBox.instance.PlaySFX("ButtonClick");
+        UIManager.Instance.CloseUI();
     }
     public void SaveOption()
     {
@@ -129,5 +126,12 @@ public class OptionUI : MonoBehaviour
         PlayerPrefs.SetFloat("BGMvalue", BGMValue);
         PlayerPrefs.SetFloat("SFXvalue", SFXValue);
 
+    }
+
+    public void OpenKeySettingUI()
+    {
+        keyUI.SetActive(true);
+        UIManager.Instance.stackUI.Push(keyUI);
+        SoundBox.instance.PlaySFX("ButtonClick");
     }
 }

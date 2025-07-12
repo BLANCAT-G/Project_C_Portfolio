@@ -28,10 +28,10 @@ public class LocalManager : MonoBehaviour
     }
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            ChangeLocale();
-        }
+        //if(Input.GetKeyDown(KeyCode.K))
+        //{
+        //    ChangeLocale();
+        //}
     }
     public void ChangeLocale()
     {
